@@ -57,7 +57,7 @@ COLORS = [
 ]
 
 SYMBOLS = [
-    {"id": "torre_peccioli", "label": "Torre di Peccioli", "category": "peccioli"},
+    {"id": "campanile_peccioli", "label": "Campanile di Peccioli", "category": "peccioli"},
     {"id": "cipresso", "label": "Cipresso toscano", "category": "peccioli"},
     {"id": "collina", "label": "Colline", "category": "peccioli"},
     {"id": "uliva", "label": "Olivo", "category": "peccioli"},
@@ -103,7 +103,7 @@ BACKGROUNDS = [
     {"id": "nola_skyline", "label": "Skyline New Orleans", "color": "#1a2f6c"},
     {"id": "nola_jazz", "label": "Jazz notturno", "color": "#2a0a3a"},
     {"id": "peccioli_hills", "label": "Colline Peccioli", "color": "#2ea36a"},
-    {"id": "peccioli_tower", "label": "Torre di Peccioli", "color": "#f5d896"},
+    {"id": "peccioli_tower", "label": "Campanile di Peccioli", "color": "#f5d896"},
     {"id": "sunset_mississippi", "label": "Tramonto Mississippi", "color": "#c84a1e"},
     {"id": "mardigras", "label": "Mardi Gras", "color": "#4a1a5a"},
 ]
@@ -116,6 +116,7 @@ DEFAULT_AVATAR = {
     "lashes": "classic",
     "lashes_color": "#1a1a1a",
     "bg": "blue-solid",
+    "border_color": "#ffffff",
 }
 
 
@@ -132,65 +133,65 @@ def eye_path(shape):
 
 
 def render_symbol(sym_id, color):
-    """Simbolo DENTRO la pupilla bianca. Disegnato a dimensione "nativa" per riempire bene.
-    I simboli sono disegnati dentro un viewBox 20x20 centrato su (100,100), scale 1.0."""
+    """Simboli dentro la pupilla bianca. Disegnati a dimensione "nativa" (raggio ~10)."""
 
     # PECCIOLI ==================================================
-    if sym_id == "torre_peccioli":
-        # Torre merlata con tetto a punta, finestra arco
+    if sym_id == "campanile_peccioli":
+        # Campanile di Peccioli: torre slanciata ottagonale con ordini di bifore sovrapposti
+        # e copertura conica a punta (come nella foto reale)
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Base torre
-        parts.append('<rect x="-5" y="-2" width="10" height="11" fill="' + color + '"/>')
-        # Merlatura
-        parts.append('<rect x="-6" y="-4" width="2" height="3" fill="' + color + '"/>')
-        parts.append('<rect x="-2" y="-4" width="2" height="3" fill="' + color + '"/>')
-        parts.append('<rect x="2" y="-4" width="2" height="3" fill="' + color + '"/>')
-        parts.append('<rect x="6" y="-4" width="2" height="3" fill="' + color + '"/>')
-        parts.append('<rect x="-6" y="-1" width="12" height="1" fill="' + color + '"/>')
-        # Finestra ad arco
-        parts.append('<path d="M -1.5 5 L -1.5 2 Q 0 0.5 1.5 2 L 1.5 5 Z" fill="white"/>')
+        # Base più larga (plinto)
+        parts.append('<rect x="-5" y="9" width="10" height="2" fill="' + color + '"/>')
+        # Corpo principale slanciato (leggermente rastremato verso l'alto)
+        parts.append('<polygon points="-4.5,9 4.5,9 4,2 -4,2" fill="' + color + '"/>')
+        # Divisorio tra primo ordine
+        parts.append('<rect x="-4.3" y="1" width="8.6" height="1" fill="white"/>')
+        # Secondo ordine (bifora - due finestre ad arco)
+        parts.append('<polygon points="-4,0 4,0 3.5,-5 -3.5,-5" fill="' + color + '"/>')
+        # Bifora nel secondo ordine (due aperture)
+        parts.append('<path d="M -2.5 -1 L -2.5 -3.5 Q -1.5 -4.5 -0.5 -3.5 L -0.5 -1 Z" fill="white"/>')
+        parts.append('<path d="M 0.5 -1 L 0.5 -3.5 Q 1.5 -4.5 2.5 -3.5 L 2.5 -1 Z" fill="white"/>')
+        # Divisorio
+        parts.append('<rect x="-3.8" y="-6" width="7.6" height="1" fill="white"/>')
+        # Terzo ordine (trifora stilizzata con 3 aperture piccole)
+        parts.append('<polygon points="-3.5,-7 3.5,-7 3,-11 -3,-11" fill="' + color + '"/>')
+        parts.append('<rect x="-2.5" y="-9.5" width="1.2" height="2" fill="white"/>')
+        parts.append('<rect x="-0.6" y="-10" width="1.2" height="2.5" fill="white"/>')
+        parts.append('<rect x="1.3" y="-9.5" width="1.2" height="2" fill="white"/>')
+        # Copertura conica a punta (tetto spiovente)
+        parts.append('<polygon points="-3,-11 3,-11 0,-16" fill="' + color + '"/>')
+        # Cuspide finale
+        parts.append('<circle cx="0" cy="-16" r="0.6" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "cipresso":
-        # Cipresso slanciato con profilo ondulato e tronco
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Chioma con profilo naturale ondulato
         parts.append('<path d="M 0 -9 Q 3 -6 3 -3 Q 4 0 3 3 Q 4 5 2 7 L -2 7 Q -4 5 -3 3 Q -4 0 -3 -3 Q -3 -6 0 -9 Z" fill="' + color + '"/>')
-        # Tronco
         parts.append('<rect x="-0.8" y="7" width="1.6" height="3" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "collina":
-        # Tre colline sovrapposte con un piccolo sole
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Sole
         parts.append('<circle cx="5" cy="-6" r="2.5" fill="' + color + '"/>')
-        # Collina posteriore
         parts.append('<path d="M -10 4 Q -5 -2 0 2 Q 4 -3 10 4 Z" fill="' + color + '" opacity="0.5"/>')
-        # Collina media
         parts.append('<path d="M -11 7 Q -5 1 -1 4 Q 3 0 9 7 Z" fill="' + color + '" opacity="0.75"/>')
-        # Collina anteriore
         parts.append('<path d="M -12 10 Q -6 5 0 8 Q 6 4 12 10 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "uliva":
-        # Ramoscello d'ulivo con foglie
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Ramo centrale
         parts.append('<path d="M -10 3 Q 0 -1 10 3" fill="none" stroke="' + color + '" stroke-width="1.3" stroke-linecap="round"/>')
-        # Foglie allungate
         parts.append('<ellipse cx="-6" cy="0" rx="2.8" ry="1.2" fill="' + color + '" transform="rotate(-25 -6 0)"/>')
         parts.append('<ellipse cx="-2" cy="-2" rx="3" ry="1.3" fill="' + color + '" transform="rotate(-15 -2 -2)"/>')
         parts.append('<ellipse cx="2" cy="-2" rx="3" ry="1.3" fill="' + color + '" transform="rotate(15 2 -2)"/>')
         parts.append('<ellipse cx="6" cy="0" rx="2.8" ry="1.2" fill="' + color + '" transform="rotate(25 6 0)"/>')
-        # Olive (2 piccoli cerchi)
         parts.append('<circle cx="-3" cy="2" r="1.2" fill="' + color + '"/>')
         parts.append('<circle cx="3" cy="2" r="1.2" fill="' + color + '"/>')
         parts.append('</g>')
@@ -198,75 +199,50 @@ def render_symbol(sym_id, color):
 
     # NEW ORLEANS ==================================================
     if sym_id == "trumpet":
-        # Tromba reale: campana svasata, corpo, valvole, bocchino
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Bocchino (sinistra)
         parts.append('<rect x="-11" y="-1.5" width="2.5" height="3" fill="' + color + '"/>')
-        # Corpo principale cilindrico
         parts.append('<rect x="-8.5" y="-1.5" width="11" height="3" fill="' + color + '"/>')
-        # 3 valvole
         parts.append('<rect x="-4" y="-3.5" width="1.5" height="2" fill="' + color + '"/>')
         parts.append('<rect x="-1.5" y="-3.5" width="1.5" height="2" fill="' + color + '"/>')
         parts.append('<rect x="1" y="-3.5" width="1.5" height="2" fill="' + color + '"/>')
-        # Campana svasata (destra)
         parts.append('<path d="M 2.5 -1.5 L 10 -5 L 10 5 L 2.5 1.5 Z" fill="' + color + '"/>')
-        # Cerchio bordo campana
         parts.append('<ellipse cx="10" cy="0" rx="1" ry="5" fill="white"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "mask":
-        # Maschera Mardi Gras tipo "colombina" con piume
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Piuma sinistra
         parts.append('<path d="M -8 -5 Q -11 -10 -9 -12 Q -7 -10 -7 -6" fill="' + color + '" opacity="0.7"/>')
-        # Piuma destra
         parts.append('<path d="M 8 -5 Q 11 -10 9 -12 Q 7 -10 7 -6" fill="' + color + '" opacity="0.7"/>')
-        # Corpo maschera (forma a occhiali)
         parts.append('<path d="M -10 -2 Q -10 -6 -6 -6 L -1 -5 Q 0 -3 1 -5 L 6 -6 Q 10 -6 10 -2 Q 10 4 6 5 Q 2 5 0 2 Q -2 5 -6 5 Q -10 4 -10 -2 Z" fill="' + color + '"/>')
-        # Occhi (fori)
         parts.append('<ellipse cx="-5" cy="-1" rx="2.5" ry="2" fill="white"/>')
         parts.append('<ellipse cx="5" cy="-1" rx="2.5" ry="2" fill="white"/>')
-        # Piccolo dettaglio centrale
         parts.append('<circle cx="0" cy="3" r="0.8" fill="white"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "fleur":
-        # Fleur-de-lys stilizzata più riconoscibile
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Petalo centrale (lancia verso l'alto)
         parts.append('<path d="M 0 -10 Q -2.5 -5 -1.5 -1 Q -2.5 3 0 8 Q 2.5 3 1.5 -1 Q 2.5 -5 0 -10 Z" fill="' + color + '"/>')
-        # Petalo sinistro ricurvo
         parts.append('<path d="M -1.5 -2 Q -9 -3 -9 3 Q -6 6 -2 3 Q -1 1 -1.5 -2 Z" fill="' + color + '"/>')
-        # Petalo destro ricurvo
         parts.append('<path d="M 1.5 -2 Q 9 -3 9 3 Q 6 6 2 3 Q 1 1 1.5 -2 Z" fill="' + color + '"/>')
-        # Fascia orizzontale
         parts.append('<rect x="-7" y="1" width="14" height="2.5" fill="' + color + '"/>')
-        # Punta superiore petalo centrale
         parts.append('<circle cx="0" cy="-10" r="1.3" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "riverboat":
-        # Battello a vapore Mississippi con ruota laterale
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Onde sotto
         parts.append('<path d="M -11 9 Q -8 7 -5 9 Q -2 7 1 9 Q 4 7 7 9 Q 10 7 11 9" fill="none" stroke="' + color + '" stroke-width="1" opacity="0.5"/>')
-        # Scafo
         parts.append('<path d="M -11 5 L 11 5 L 9 8 L -9 8 Z" fill="' + color + '"/>')
-        # Ponte principale
         parts.append('<rect x="-9" y="0" width="18" height="5" fill="' + color + '"/>')
-        # Ponte superiore più piccolo
         parts.append('<rect x="-6" y="-3" width="12" height="3" fill="' + color + '"/>')
-        # Ciminiere gemelle (iconic paddle steamer)
         parts.append('<rect x="-3.5" y="-9" width="2" height="6" fill="' + color + '"/>')
         parts.append('<rect x="1.5" y="-9" width="2" height="6" fill="' + color + '"/>')
-        # Ruota laterale (cerchio con raggi)
         parts.append('<circle cx="-9" cy="3" r="2.5" fill="none" stroke="' + color + '" stroke-width="0.8"/>')
         parts.append('<line x1="-9" y1="0.5" x2="-9" y2="5.5" stroke="' + color + '" stroke-width="0.6"/>')
         parts.append('<line x1="-11.5" y1="3" x2="-6.5" y2="3" stroke="' + color + '" stroke-width="0.6"/>')
@@ -274,18 +250,13 @@ def render_symbol(sym_id, color):
         return "".join(parts)
 
     if sym_id == "balcony":
-        # Ringhiera in ferro battuto con riccioli
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Base orizzontale superiore
         parts.append('<rect x="-10" y="-5" width="20" height="1.5" fill="' + color + '"/>')
-        # Base orizzontale inferiore
         parts.append('<rect x="-10" y="5" width="20" height="1.5" fill="' + color + '"/>')
-        # Riccioli decorativi
         parts.append('<circle cx="-6" cy="0" r="2.5" fill="none" stroke="' + color + '" stroke-width="1"/>')
         parts.append('<circle cx="0" cy="0" r="2.5" fill="none" stroke="' + color + '" stroke-width="1"/>')
         parts.append('<circle cx="6" cy="0" r="2.5" fill="none" stroke="' + color + '" stroke-width="1"/>')
-        # Aste verticali tra i riccioli
         parts.append('<line x1="-9" y1="-3.5" x2="-9" y2="5" stroke="' + color + '" stroke-width="1"/>')
         parts.append('<line x1="-3" y1="-3.5" x2="-3" y2="5" stroke="' + color + '" stroke-width="1"/>')
         parts.append('<line x1="3" y1="-3.5" x2="3" y2="5" stroke="' + color + '" stroke-width="1"/>')
@@ -295,24 +266,17 @@ def render_symbol(sym_id, color):
 
     # TEMI =====================================================
     if sym_id == "note":
-        # Nota musicale doppia (eighth note) classica
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Testa della nota sinistra
         parts.append('<ellipse cx="-5" cy="6" rx="3" ry="2.3" fill="' + color + '" transform="rotate(-20 -5 6)"/>')
-        # Testa della nota destra
         parts.append('<ellipse cx="4" cy="7" rx="3" ry="2.3" fill="' + color + '" transform="rotate(-20 4 7)"/>')
-        # Gambo sinistro
         parts.append('<rect x="-3" y="-8" width="1.5" height="14" fill="' + color + '"/>')
-        # Gambo destro
         parts.append('<rect x="6" y="-7" width="1.5" height="14" fill="' + color + '"/>')
-        # Barra che li unisce (beam)
         parts.append('<path d="M -3 -8 L 7.5 -7 L 7.5 -4.5 L -3 -5.5 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "wave":
-        # Onde del mare (3 linee ondulate sovrapposte)
         parts = []
         parts.append('<g transform="translate(100 100)">')
         parts.append('<path d="M -10 -4 Q -5 -8 0 -4 Q 5 0 10 -4" fill="none" stroke="' + color + '" stroke-width="1.8" stroke-linecap="round"/>')
@@ -322,44 +286,34 @@ def render_symbol(sym_id, color):
         return "".join(parts)
 
     if sym_id == "people":
-        # Tre figure stilizzate che si tengono (comunità)
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Persona sinistra
         parts.append('<circle cx="-6.5" cy="-4" r="2" fill="' + color + '"/>')
         parts.append('<path d="M -9 0 Q -6.5 -2 -4 0 L -3.5 6 L -9.5 6 Z" fill="' + color + '"/>')
-        # Persona centrale (leggermente più grande)
         parts.append('<circle cx="0" cy="-5" r="2.3" fill="' + color + '"/>')
         parts.append('<path d="M -3 -1 Q 0 -3 3 -1 L 3.5 7 L -3.5 7 Z" fill="' + color + '"/>')
-        # Persona destra
         parts.append('<circle cx="6.5" cy="-4" r="2" fill="' + color + '"/>')
         parts.append('<path d="M 4 0 Q 6.5 -2 9 0 L 9.5 6 L 3.5 6 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "book":
-        # Libro aperto con pagine
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Pagina sinistra
         parts.append('<path d="M -10 -5 L -10 6 L 0 4 L 0 -4 Z" fill="' + color + '"/>')
-        # Pagina destra
         parts.append('<path d="M 10 -5 L 10 6 L 0 4 L 0 -4 Z" fill="' + color + '"/>')
-        # Linee di testo simulate
         parts.append('<line x1="-8" y1="-2" x2="-2" y2="-2.6" stroke="white" stroke-width="0.6"/>')
         parts.append('<line x1="-8" y1="0" x2="-2" y2="-0.6" stroke="white" stroke-width="0.6"/>')
         parts.append('<line x1="-8" y1="2" x2="-2" y2="1.4" stroke="white" stroke-width="0.6"/>')
         parts.append('<line x1="2" y1="-2.6" x2="8" y2="-2" stroke="white" stroke-width="0.6"/>')
         parts.append('<line x1="2" y1="-0.6" x2="8" y2="0" stroke="white" stroke-width="0.6"/>')
         parts.append('<line x1="2" y1="1.4" x2="8" y2="2" stroke="white" stroke-width="0.6"/>')
-        # Rilegatura centrale
         parts.append('<line x1="0" y1="-4" x2="0" y2="4" stroke="' + color + '" stroke-width="0.8"/>')
         parts.append('</g>')
         return "".join(parts)
 
     # ASTRATTI =====================================================
     if sym_id == "star":
-        # Stella a 5 punte classica
         parts = []
         parts.append('<g transform="translate(100 100)">')
         parts.append('<polygon points="0,-10 3,-3 10,-3 4.5,1.5 6.5,9 0,5 -6.5,9 -4.5,1.5 -10,-3 -3,-3" fill="' + color + '"/>')
@@ -367,7 +321,6 @@ def render_symbol(sym_id, color):
         return "".join(parts)
 
     if sym_id == "heart":
-        # Cuore simmetrico
         parts = []
         parts.append('<g transform="translate(100 100)">')
         parts.append('<path d="M 0 9 C -11 0 -11 -9 -5 -9 C -2 -9 0 -6 0 -4 C 0 -6 2 -9 5 -9 C 11 -9 11 0 0 9 Z" fill="' + color + '"/>')
@@ -375,39 +328,24 @@ def render_symbol(sym_id, color):
         return "".join(parts)
 
     if sym_id == "eye_inside":
-        # Occhio dentro occhio - ricorsivo, simbolo Peccioli Eyes
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Occhio esterno (contorno)
         parts.append('<path d="M -10 0 Q 0 -7 10 0 Q 0 7 -10 0 Z" fill="none" stroke="' + color + '" stroke-width="1.8"/>')
-        # Iride interna
         parts.append('<circle cx="0" cy="0" r="4" fill="' + color + '"/>')
-        # Pupilla (punto interno)
         parts.append('<circle cx="0" cy="0" r="1.8" fill="white"/>')
-        # Mini punto nero al centro
         parts.append('<circle cx="0" cy="0" r="0.7" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "moon":
-        # Mezzaluna crescente elegante
         parts = []
         parts.append('<g transform="translate(100 100)">')
-        # Forma crescente: cerchio grande menopolitica un cerchio spostato
         parts.append('<path d="M -2 -9 A 9 9 0 1 0 -2 9 A 6.5 6.5 0 1 1 -2 -9 Z" fill="' + color + '"/>')
-        # Piccola stella accanto
         parts.append('<polygon points="6,-4 6.8,-2 9,-2 7.2,-0.7 7.8,1.5 6,0.3 4.2,1.5 4.8,-0.7 3,-2 5.2,-2" fill="' + color + '" opacity="0.8"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "lightning":
-        # Fulmine a zigzag classico (saetta)
-        parts = []
-        parts.append('<g transform="translate(100 100)">')
-        parts.append('<polygon points="-3,-10 4,-3 0,-3 3,10 -4,2 -1,2 -5,-10 -3,-10" fill="' + color + '"/>')
-        # Semplifico a forma pulita
-        parts.append('</g>')
-        # Disegno migliore del fulmine
         parts = []
         parts.append('<g transform="translate(100 100)">')
         parts.append('<polygon points="-2,-10 5,-2 1,-2 4,10 -5,0 -1,0 -4,-10" fill="' + color + '"/>')
@@ -463,20 +401,15 @@ def render_background(bg_id):
         stars = [(30,40),(160,35),(50,160),(170,140),(100,30),(25,110),(175,80),(90,170),(130,60),(60,80),(150,170),(20,70)]
         for sx, sy in stars:
             out.append('<circle cx="' + str(sx) + '" cy="' + str(sy) + '" r="1.3" fill="' + BRAND_YELLOW + '"/>')
-        # Luna
         out.append('<circle cx="165" cy="40" r="10" fill="' + BRAND_YELLOW + '" opacity="0.85"/>')
 
     elif bg_id == "nola_skyline":
-        # Cielo gradiente simulato con rettangoli
         out.append('<rect y="0" width="200" height="130" fill="#1a2f6c"/>')
         out.append('<rect y="130" width="200" height="70" fill="#0a1548"/>')
-        # Stelle
         out.append('<circle cx="30" cy="30" r="1" fill="white" opacity="0.9"/>')
         out.append('<circle cx="80" cy="20" r="1.2" fill="white" opacity="0.9"/>')
         out.append('<circle cx="150" cy="40" r="1" fill="white" opacity="0.8"/>')
-        # Skyline silhouette
         out.append('<polygon points="0,200 0,150 15,145 25,130 40,135 55,120 70,125 85,105 100,115 115,100 130,110 145,90 160,105 175,95 190,100 200,90 200,200" fill="#05082a"/>')
-        # Luci finestre
         out.append('<rect x="25" y="140" width="1.5" height="2" fill="' + BRAND_YELLOW + '"/>')
         out.append('<rect x="70" y="135" width="1.5" height="2" fill="' + BRAND_YELLOW + '"/>')
         out.append('<rect x="115" y="115" width="1.5" height="2" fill="' + BRAND_YELLOW + '"/>')
@@ -485,74 +418,59 @@ def render_background(bg_id):
 
     elif bg_id == "nola_jazz":
         out.append('<rect width="200" height="200" fill="#2a0a3a"/>')
-        # Note musicali sparse e silhouettes di tromba
         out.append('<g opacity="0.25" fill="' + BRAND_YELLOW + '">')
-        # Nota 1
         out.append('<ellipse cx="30" cy="45" rx="5" ry="3.5" transform="rotate(-20 30 45)"/>')
         out.append('<rect x="33" y="25" width="1.5" height="22"/>')
-        # Nota 2
         out.append('<ellipse cx="170" cy="60" rx="5" ry="3.5" transform="rotate(-20 170 60)"/>')
         out.append('<rect x="173" y="40" width="1.5" height="22"/>')
-        # Nota 3
         out.append('<ellipse cx="40" cy="160" rx="5" ry="3.5" transform="rotate(-20 40 160)"/>')
         out.append('<rect x="43" y="140" width="1.5" height="22"/>')
-        # Nota 4
         out.append('<ellipse cx="160" cy="170" rx="5" ry="3.5" transform="rotate(-20 160 170)"/>')
         out.append('<rect x="163" y="150" width="1.5" height="22"/>')
         out.append('</g>')
 
     elif bg_id == "peccioli_hills":
-        # Cielo chiaro
         out.append('<rect y="0" width="200" height="110" fill="#b8dcf0"/>')
-        # Sole
         out.append('<circle cx="155" cy="45" r="14" fill="' + BRAND_YELLOW + '" opacity="0.9"/>')
-        # Nuvole
         out.append('<ellipse cx="50" cy="35" rx="15" ry="5" fill="white" opacity="0.75"/>')
         out.append('<ellipse cx="90" cy="55" rx="12" ry="4" fill="white" opacity="0.65"/>')
-        # Colline distanti
         out.append('<path d="M 0 130 Q 50 100 100 115 Q 150 95 200 120 L 200 200 L 0 200 Z" fill="#4a9960" opacity="0.65"/>')
-        # Colline medie con cipressi
         out.append('<path d="M 0 155 Q 40 130 90 140 Q 140 125 200 145 L 200 200 L 0 200 Z" fill="#2e7a42"/>')
-        # Cipressi (silhouette)
         out.append('<ellipse cx="40" cy="138" rx="3" ry="10" fill="#1a5028"/>')
         out.append('<ellipse cx="130" cy="130" rx="3" ry="10" fill="#1a5028"/>')
         out.append('<ellipse cx="165" cy="140" rx="3" ry="10" fill="#1a5028"/>')
-        # Terreno in primo piano
         out.append('<path d="M 0 180 Q 100 170 200 182 L 200 200 L 0 200 Z" fill="#1a7a4a"/>')
 
     elif bg_id == "peccioli_tower":
-        # Sfondo color pietra toscana
-        out.append('<rect width="200" height="200" fill="#f5d896"/>')
-        # Pattern sottili di "mura"
-        out.append('<g opacity="0.15" stroke="#8b6914" stroke-width="0.8" fill="none">')
-        for y in range(0, 200, 14):
-            out.append('<line x1="0" y1="' + str(y) + '" x2="200" y2="' + str(y) + '"/>')
+        # Sfondo: cielo azzurro chiaro con silhouette del campanile di Peccioli stilizzata
+        out.append('<rect y="0" width="200" height="160" fill="#b8dcf0"/>')
+        out.append('<rect y="160" width="200" height="40" fill="#d4b888"/>')
+        # Campanile silhouette in scala grande
+        out.append('<g opacity="0.35" fill="#8b6914">')
+        # Corpo slanciato
+        out.append('<polygon points="85,160 115,160 112,100 88,100"/>')
+        # Secondo ordine
+        out.append('<polygon points="86,99 114,99 111,65 89,65"/>')
+        # Finestre ad arco scure
+        out.append('<path d="M 93 90 L 93 78 Q 96 74 99 78 L 99 90 Z" fill="#6b4d0a"/>')
+        out.append('<path d="M 101 90 L 101 78 Q 104 74 107 78 L 107 90 Z" fill="#6b4d0a"/>')
+        # Terzo ordine
+        out.append('<polygon points="88,64 112,64 110,35 90,35"/>')
+        # Tetto conico
+        out.append('<polygon points="87,34 113,34 100,10"/>')
         out.append('</g>')
-        # Silhouette torre grande sfocata sullo sfondo
-        out.append('<g opacity="0.2" fill="#8b6914">')
-        # Torre principale
-        out.append('<rect x="85" y="80" width="30" height="80"/>')
-        # Merlatura
-        out.append('<rect x="82" y="72" width="6" height="10"/>')
-        out.append('<rect x="92" y="72" width="6" height="10"/>')
-        out.append('<rect x="102" y="72" width="6" height="10"/>')
-        out.append('<rect x="112" y="72" width="6" height="10"/>')
-        out.append('<rect x="82" y="80" width="36" height="3"/>')
-        out.append('</g>')
+        # Cielo sopra - qualche nuvola
+        out.append('<ellipse cx="40" cy="30" rx="12" ry="4" fill="white" opacity="0.6"/>')
+        out.append('<ellipse cx="170" cy="45" rx="10" ry="3" fill="white" opacity="0.55"/>')
 
     elif bg_id == "sunset_mississippi":
-        # Cielo tramonto
         out.append('<rect y="0" width="200" height="80" fill="#ff7e4a"/>')
         out.append('<rect y="80" width="200" height="30" fill="#ffa07a"/>')
-        # Sole grande basso
         out.append('<circle cx="100" cy="110" r="22" fill="' + BRAND_YELLOW + '" opacity="0.95"/>')
-        # Acqua del fiume
         out.append('<rect y="110" width="200" height="90" fill="#8b4513"/>')
-        # Riflessi sull'acqua
         out.append('<rect y="115" width="200" height="3" fill="' + BRAND_YELLOW + '" opacity="0.4"/>')
         out.append('<rect y="130" width="200" height="2" fill="' + BRAND_YELLOW + '" opacity="0.3"/>')
         out.append('<rect y="145" width="200" height="2" fill="' + BRAND_YELLOW + '" opacity="0.2"/>')
-        # Silhouette battello piccolo
         out.append('<g fill="#2a1a0a">')
         out.append('<rect x="35" y="100" width="25" height="6"/>')
         out.append('<rect x="40" y="95" width="15" height="5"/>')
@@ -561,9 +479,7 @@ def render_background(bg_id):
         out.append('</g>')
 
     elif bg_id == "mardigras":
-        # Sfondo viola Mardi Gras
         out.append('<rect width="200" height="200" fill="#4a1a5a"/>')
-        # Diamanti/confetti viola-verde-giallo classic Mardi Gras
         confetti = [
             (25, 30, "#2ea36a"), (60, 50, "#FFDE59"), (140, 25, "#7a3fb8"),
             (170, 60, "#2ea36a"), (30, 90, "#FFDE59"), (90, 110, "#7a3fb8"),
@@ -572,7 +488,6 @@ def render_background(bg_id):
         ]
         for cx, cy, col in confetti:
             out.append('<polygon points="' + str(cx) + ',' + str(cy-3) + ' ' + str(cx+3) + ',' + str(cy) + ' ' + str(cx) + ',' + str(cy+3) + ' ' + str(cx-3) + ',' + str(cy) + '" fill="' + col + '" opacity="0.75"/>')
-        # Perline / collane stilizzate (archi)
         out.append('<path d="M -10 70 Q 100 55 210 70" fill="none" stroke="#FFDE59" stroke-width="1" opacity="0.5" stroke-dasharray="2,3"/>')
         out.append('<path d="M -10 130 Q 100 115 210 130" fill="none" stroke="#2ea36a" stroke-width="1" opacity="0.5" stroke-dasharray="2,3"/>')
 
@@ -591,10 +506,8 @@ def build_eye_svg(params_tuple, size=240):
     else:
         iris_radius = 26
 
-    if params["bg"] in ("yellow-solid", "white-solid", "peccioli_tower"):
-        stroke_color = BRAND_BLUE
-    else:
-        stroke_color = "white"
+    # Il colore bordo occhio ora e' personalizzabile
+    stroke_color = params.get("border_color", "#ffffff")
 
     if params["bg"] == "white-solid":
         sclera_color = "#f4f1e8"
@@ -604,11 +517,11 @@ def build_eye_svg(params_tuple, size=240):
     sym_color = params.get("symbol_color", "#130089")
     lash_color = params.get("lashes_color", "#1a1a1a")
 
-    content = params["shape"] + params["iris"] + params["symbol"] + sym_color + params["bg"] + params["lashes"] + lash_color
+    content = params["shape"] + params["iris"] + params["symbol"] + sym_color + params["bg"] + params["lashes"] + lash_color + stroke_color
     clip_id = "eye-clip-" + hashlib.md5(content.encode()).hexdigest()[:8]
 
-    # Pupilla GRANDE per ospitare simbolo grande
-    pupil_radius = iris_radius * 0.7
+    # Pupilla leggermente piu' piccola (0.65 invece di 0.7)
+    pupil_radius = iris_radius * 0.65
 
     parts = []
     parts.append('<svg viewBox="0 0 200 200" width="' + str(size) + '" height="' + str(size) + '" xmlns="http://www.w3.org/2000/svg">')
@@ -618,8 +531,8 @@ def build_eye_svg(params_tuple, size=240):
     parts.append('<g clip-path="url(#' + clip_id + ')">')
     parts.append('<circle cx="100" cy="100" r="' + str(iris_radius) + '" fill="' + params["iris"] + '"/>')
     parts.append('<circle cx="100" cy="100" r="' + str(pupil_radius) + '" fill="white"/>')
-    # Scala simbolo per riempire la pupilla (simboli disegnati a raggio ~10, pupilla ~18 = scala 1.6)
-    scale_factor = pupil_radius / 11
+    # Scala simbolo per riempire bene la pupilla senza essere eccessivo
+    scale_factor = pupil_radius / 12
     parts.append('<g transform="translate(100 100) scale(' + str(scale_factor) + ') translate(-100 -100)">')
     parts.append(render_symbol(params["symbol"], sym_color))
     parts.append('</g>')
@@ -630,7 +543,7 @@ def build_eye_svg(params_tuple, size=240):
 
 
 def eye_svg(avatar_dict, size=240):
-    keys = ["shape", "iris", "symbol", "symbol_color", "lashes", "lashes_color", "bg"]
+    keys = ["shape", "iris", "symbol", "symbol_color", "lashes", "lashes_color", "bg", "border_color"]
     tup = tuple((k, avatar_dict.get(k, DEFAULT_AVATAR[k])) for k in keys)
     return build_eye_svg(tup, size)
 
@@ -668,7 +581,7 @@ if "view" not in st.session_state:
     st.session_state.view = "home"
 
 
-st.markdown('<div class="proto-banner">Prototipo v7 - simboli ridisegnati e grandi, sfondi illustrati Peccioli/NOLA.</div>', unsafe_allow_html=True)
+st.markdown('<div class="proto-banner">Prototipo v8 - simbolo ridimensionato, campanile ridisegnato, colore bordo personalizzabile.</div>', unsafe_allow_html=True)
 
 
 db = load_db()
@@ -748,6 +661,11 @@ if "symbol_color" not in avatar:
     avatar["symbol_color"] = "#130089"
 if "lashes_color" not in avatar:
     avatar["lashes_color"] = "#1a1a1a"
+if "border_color" not in avatar:
+    avatar["border_color"] = "#ffffff"
+# Migra il vecchio id simbolo torre_peccioli al nuovo campanile_peccioli
+if avatar.get("symbol") == "torre_peccioli":
+    avatar["symbol"] = "campanile_peccioli"
 
 display_name = user["display_name"]
 
@@ -809,7 +727,8 @@ elif st.session_state.view == "editor":
                           ("w_symbol_color", avatar.get("symbol_color", "#130089")),
                           ("w_lashes", avatar["lashes"]),
                           ("w_lashes_color", avatar.get("lashes_color", "#1a1a1a")),
-                          ("w_bg", avatar["bg"])]:
+                          ("w_bg", avatar["bg"]),
+                          ("w_border_color", avatar.get("border_color", "#ffffff"))]:
         if key not in st.session_state:
             st.session_state[key] = default
 
@@ -825,6 +744,7 @@ elif st.session_state.view == "editor":
         "lashes": st.session_state.w_lashes,
         "lashes_color": st.session_state.w_lashes_color,
         "bg": st.session_state.w_bg,
+        "border_color": st.session_state.w_border_color,
     }
 
     c_preview, c_controls = st.columns([1, 1.3])
@@ -844,6 +764,7 @@ elif st.session_state.view == "editor":
             st.session_state.w_lashes = random.choice(LASHES)["id"]
             st.session_state.w_lashes_color = random.choice([c[1] for c in COLORS])
             st.session_state.w_bg = random.choice(BACKGROUNDS)["id"]
+            st.session_state.w_border_color = random.choice([c[1] for c in COLORS])
             st.rerun()
 
         st.caption("Clicca su **Salva** per rendere permanenti le scelte.")
@@ -859,9 +780,17 @@ elif st.session_state.view == "editor":
             st.session_state.w_shape = _new_shape
             st.rerun()
 
-        st.markdown("**Colore iride**")
+        st.markdown("**Colore bordo dell'occhio**")
         color_labels = [c[0] for c in COLORS]
         color_values = [c[1] for c in COLORS]
+        current_border_idx = color_values.index(st.session_state.w_border_color) if st.session_state.w_border_color in color_values else 11
+        new_border_label = st.selectbox("Bordo", color_labels, index=current_border_idx, label_visibility="collapsed", key="__sb_border")
+        _new_border = color_values[color_labels.index(new_border_label)]
+        if _new_border != st.session_state.w_border_color:
+            st.session_state.w_border_color = _new_border
+            st.rerun()
+
+        st.markdown("**Colore iride**")
         current_iris_idx = color_values.index(st.session_state.w_iris) if st.session_state.w_iris in color_values else 0
         new_iris_label = st.selectbox("Iride", color_labels, index=current_iris_idx, label_visibility="collapsed", key="__sb_iris")
         _new_iris = color_values[color_labels.index(new_iris_label)]
@@ -945,6 +874,7 @@ elif st.session_state.view == "editor":
                     "lashes": st.session_state.w_lashes,
                     "lashes_color": st.session_state.w_lashes_color,
                     "bg": st.session_state.w_bg,
+                    "border_color": st.session_state.w_border_color,
                 }
                 db[st.session_state.username]["visible_in_gallery"] = visible
                 save_db(db)
@@ -952,7 +882,7 @@ elif st.session_state.view == "editor":
                 st.rerun()
         with col_reset:
             if st.button("Annulla", use_container_width=True, key="btn_reset_avatar"):
-                for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_symbol_color", "w_lashes", "w_lashes_color", "w_bg"]:
+                for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_symbol_color", "w_lashes", "w_lashes_color", "w_bg", "w_border_color"]:
                     if k in st.session_state:
                         del st.session_state[k]
                 st.rerun()
