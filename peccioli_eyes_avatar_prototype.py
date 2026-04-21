@@ -41,7 +41,8 @@ SHAPES = [
     {"id": "wide", "label": "Largo"},
 ]
 
-IRIS_COLORS = [
+# Palette condivisa iride + simbolo + ciglia
+COLORS = [
     ("Giallo brand", "#FFDE59"),
     ("Blu brand", "#130089"),
     ("Verde bosco", "#2ea36a"),
@@ -52,6 +53,8 @@ IRIS_COLORS = [
     ("Grigio", "#636363"),
     ("Azzurro", "#4db3e8"),
     ("Rosa antico", "#c26a8a"),
+    ("Nero", "#1a1a1a"),
+    ("Bianco", "#ffffff"),
 ]
 
 SYMBOLS = [
@@ -106,7 +109,9 @@ DEFAULT_AVATAR = {
     "shape": "almond",
     "iris": "#FFDE59",
     "symbol": "trumpet",
+    "symbol_color": "#130089",
     "lashes": "classic",
+    "lashes_color": "#1a1a1a",
     "bg": "blue-solid",
 }
 
@@ -124,30 +129,29 @@ def eye_path(shape):
 
 
 def render_symbol(sym_id, color):
-    """Simbolo dentro la pupilla bianca centrale, scalato per starci.
-    Centro fisso a (100, 100), scale 0.55-0.6 per stare nella pupilla."""
+    """Simbolo dentro la pupilla bianca. Scala 0.7-0.75 per riempire meglio la pupilla."""
     if sym_id == "torre_peccioli":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.55)">')
+        parts.append('<g transform="translate(100 100) scale(0.72)">')
         parts.append('<rect x="-4" y="-4" width="8" height="11" fill="' + color + '"/>')
         parts.append('<polygon points="-6,-4 0,-9 6,-4" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "cipresso":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
+        parts.append('<g transform="translate(100 100) scale(0.75)">')
         parts.append('<ellipse cx="0" cy="0" rx="3" ry="8" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "collina":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
+        parts.append('<g transform="translate(100 100) scale(0.7)">')
         parts.append('<path d="M -10 4 Q -5 -4 0 0 Q 5 -6 10 4 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "uliva":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
+        parts.append('<g transform="translate(100 100) scale(0.72)">')
         parts.append('<path d="M -7 3 Q 0 -4 7 3" fill="none" stroke="' + color + '" stroke-width="1.5"/>')
         parts.append('<ellipse cx="-4" cy="0" rx="1.8" ry="1" fill="' + color + '"/>')
         parts.append('<ellipse cx="0" cy="-1" rx="1.8" ry="1" fill="' + color + '"/>')
@@ -157,15 +161,15 @@ def render_symbol(sym_id, color):
 
     if sym_id == "trumpet":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.55)">')
+        parts.append('<g transform="translate(100 100) scale(0.7)">')
         parts.append('<path d="M -9 -3 L -3 -5 L -3 5 L -9 3 Z" fill="' + color + '"/>')
         parts.append('<rect x="-3" y="-2" width="8" height="4" fill="' + color + '"/>')
-        parts.append('<circle cx="7" cy="0" r="4" fill="none" stroke="' + color + '" stroke-width="1.6"/>')
+        parts.append('<circle cx="7" cy="0" r="4" fill="none" stroke="' + color + '" stroke-width="1.8"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "mask":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.55)">')
+        parts.append('<g transform="translate(100 100) scale(0.7)">')
         parts.append('<path d="M -8 -2 Q -8 -5 -5 -6 Q 0 -7 5 -6 Q 8 -5 8 -2 Q 8 3 0 5 Q -8 3 -8 -2 Z" fill="' + color + '"/>')
         parts.append('<ellipse cx="-3" cy="-1" rx="1.5" ry="1.5" fill="white"/>')
         parts.append('<ellipse cx="3" cy="-1" rx="1.5" ry="1.5" fill="white"/>')
@@ -173,7 +177,7 @@ def render_symbol(sym_id, color):
         return "".join(parts)
     if sym_id == "fleur":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.55)">')
+        parts.append('<g transform="translate(100 100) scale(0.7)">')
         parts.append('<path d="M 0 -8 Q -3 -4 -1.5 0 Q -3 4 0 8 Q 3 4 1.5 0 Q 3 -4 0 -8 Z" fill="' + color + '"/>')
         parts.append('<path d="M -6 -1 Q -8 2 -3 6 Q 0 3 -1.5 1 Q -4 -3 -6 -1 Z" fill="' + color + '" opacity="0.85"/>')
         parts.append('<path d="M 6 -1 Q 8 2 3 6 Q 0 3 1.5 1 Q 4 -3 6 -1 Z" fill="' + color + '" opacity="0.85"/>')
@@ -182,7 +186,7 @@ def render_symbol(sym_id, color):
         return "".join(parts)
     if sym_id == "riverboat":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.55)">')
+        parts.append('<g transform="translate(100 100) scale(0.7)">')
         parts.append('<path d="M -9 3 L 9 3 L 7 6 L -7 6 Z" fill="' + color + '"/>')
         parts.append('<rect x="-6" y="-1" width="12" height="4" fill="' + color + '"/>')
         parts.append('<rect x="-1.5" y="-6" width="1.5" height="5" fill="' + color + '"/>')
@@ -191,7 +195,7 @@ def render_symbol(sym_id, color):
         return "".join(parts)
     if sym_id == "balcony":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.55)">')
+        parts.append('<g transform="translate(100 100) scale(0.7)">')
         parts.append('<rect x="-8" y="3" width="16" height="1.5" fill="' + color + '"/>')
         parts.append('<rect x="-8" y="-5" width="16" height="1.5" fill="' + color + '"/>')
         parts.append('<line x1="-6" y1="-3.5" x2="-6" y2="3" stroke="' + color + '" stroke-width="0.8"/>')
@@ -204,22 +208,22 @@ def render_symbol(sym_id, color):
 
     if sym_id == "note":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.55)">')
+        parts.append('<g transform="translate(100 100) scale(0.7)">')
         parts.append('<ellipse cx="-2" cy="5" rx="4" ry="3" fill="' + color + '" transform="rotate(-20 -2 5)"/>')
         parts.append('<rect x="1" y="-7" width="1.5" height="13" fill="' + color + '"/>')
-        parts.append('<path d="M 2.5 -7 Q 9 -5 8 0.5" fill="none" stroke="' + color + '" stroke-width="1.8" stroke-linecap="round"/>')
+        parts.append('<path d="M 2.5 -7 Q 9 -5 8 0.5" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "wave":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
-        parts.append('<path d="M -9 -2 Q -4 -6 0 -2 Q 4 2 9 -2" fill="none" stroke="' + color + '" stroke-width="1.8" stroke-linecap="round"/>')
-        parts.append('<path d="M -9 3 Q -4 -1 0 3 Q 4 7 9 3" fill="none" stroke="' + color + '" stroke-width="1.8" stroke-linecap="round"/>')
+        parts.append('<g transform="translate(100 100) scale(0.72)">')
+        parts.append('<path d="M -9 -2 Q -4 -6 0 -2 Q 4 2 9 -2" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round"/>')
+        parts.append('<path d="M -9 3 Q -4 -1 0 3 Q 4 7 9 3" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "people":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.5)">')
+        parts.append('<g transform="translate(100 100) scale(0.65)">')
         parts.append('<circle cx="-6" cy="-2" r="2" fill="' + color + '"/>')
         parts.append('<rect x="-8" y="1" width="4" height="5" rx="1" fill="' + color + '"/>')
         parts.append('<circle cx="0" cy="-3" r="2.5" fill="' + color + '"/>')
@@ -230,39 +234,39 @@ def render_symbol(sym_id, color):
         return "".join(parts)
     if sym_id == "book":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
+        parts.append('<g transform="translate(100 100) scale(0.72)">')
         parts.append('<path d="M -7 -5 L 0 -3 L 7 -5 L 7 5 L 0 3 L -7 5 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "star":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
+        parts.append('<g transform="translate(100 100) scale(0.72)">')
         parts.append('<polygon points="0,-8 2.5,-2.5 8,-2.5 3.5,1.5 5,7 0,4 -5,7 -3.5,1.5 -8,-2.5 -2.5,-2.5" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "heart":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
+        parts.append('<g transform="translate(100 100) scale(0.72)">')
         parts.append('<path d="M 0 6 C -8 -1 -8 -6 -4 -6 C -1.5 -6 0 -4 0 -2 C 0 -4 1.5 -6 4 -6 C 8 -6 8 -1 0 6 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "eye_inside":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
-        parts.append('<path d="M -8 0 Q 0 -5 8 0 Q 0 5 -8 0 Z" fill="none" stroke="' + color + '" stroke-width="1.5"/>')
+        parts.append('<g transform="translate(100 100) scale(0.72)">')
+        parts.append('<path d="M -8 0 Q 0 -5 8 0 Q 0 5 -8 0 Z" fill="none" stroke="' + color + '" stroke-width="1.8"/>')
         parts.append('<circle cx="0" cy="0" r="2.5" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "moon":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
+        parts.append('<g transform="translate(100 100) scale(0.72)">')
         parts.append('<path d="M -2 -7 A 6 6 0 1 0 -2 7 A 4 4 0 1 1 -2 -7 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "lightning":
         parts = []
-        parts.append('<g transform="translate(100 100) scale(0.6)">')
+        parts.append('<g transform="translate(100 100) scale(0.72)">')
         parts.append('<polygon points="-1.5,-8 2.5,-1.5 -0.5,-1.5 1.5,8 -3,1.5 0,1.5" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
@@ -270,7 +274,7 @@ def render_symbol(sym_id, color):
     return ""
 
 
-def render_lashes(shape, style):
+def render_lashes(shape, style, color):
     if style == "none":
         return ""
     if shape == "round":
@@ -304,7 +308,7 @@ def render_lashes(shape, style):
         tilt = (x - 100) * 0.25
         x2 = x + tilt
         y2 = top_y - length
-        out.append('<line x1="' + str(x) + '" y1="' + str(top_y) + '" x2="' + str(x2) + '" y2="' + str(y2) + '" stroke="#1a1a1a" stroke-width="' + str(thick) + '" stroke-linecap="round"/>')
+        out.append('<line x1="' + str(x) + '" y1="' + str(top_y) + '" x2="' + str(x2) + '" y2="' + str(y2) + '" stroke="' + color + '" stroke-width="' + str(thick) + '" stroke-linecap="round"/>')
     return "".join(out)
 
 
@@ -322,25 +326,6 @@ def render_background(bg_id):
         out.append('<path d="M 0 200 Q 50 150 100 170 Q 150 155 200 175 L 200 200 Z" fill="#1a7a4a" opacity="0.5"/>')
         out.append('<path d="M 0 200 Q 60 170 120 185 Q 160 175 200 190 L 200 200 Z" fill="#0d5530" opacity="0.6"/>')
     return "".join(out)
-
-
-def symbol_color_on_white(iris_color):
-    """Colore del simbolo quando va su pupilla bianca.
-    Se iride e' molto scura uso il suo stesso colore per coerenza cromatica.
-    Se iride e' chiara uso blu brand per contrasto."""
-    r = int(iris_color[1:3], 16)
-    g = int(iris_color[3:5], 16)
-    b = int(iris_color[5:7], 16)
-    lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-    if lum < 0.35:
-        # iride scura: uso lo stesso colore dell'iride sul bianco
-        return iris_color
-    elif lum > 0.7:
-        # iride molto chiara (giallo): blu brand per contrasto forte
-        return BRAND_BLUE
-    else:
-        # iride media: uso un tono scuro dell'iride
-        return iris_color
 
 
 @st.cache_data(show_spinner=False)
@@ -365,12 +350,13 @@ def build_eye_svg(params_tuple, size=240):
     else:
         sclera_color = "white"
 
-    sym_color = symbol_color_on_white(params["iris"])
+    sym_color = params.get("symbol_color", "#130089")
+    lash_color = params.get("lashes_color", "#1a1a1a")
 
-    content = params["shape"] + params["iris"] + params["symbol"] + params["bg"] + params["lashes"]
+    content = params["shape"] + params["iris"] + params["symbol"] + sym_color + params["bg"] + params["lashes"] + lash_color
     clip_id = "eye-clip-" + hashlib.md5(content.encode()).hexdigest()[:8]
 
-    pupil_radius = iris_radius * 0.55
+    pupil_radius = iris_radius * 0.6
 
     parts = []
     parts.append('<svg viewBox="0 0 200 200" width="' + str(size) + '" height="' + str(size) + '" xmlns="http://www.w3.org/2000/svg">')
@@ -378,20 +364,17 @@ def build_eye_svg(params_tuple, size=240):
     parts.append(render_background(params["bg"]))
     parts.append('<path d="' + eye_d + '" fill="' + sclera_color + '" stroke="' + stroke_color + '" stroke-width="3"/>')
     parts.append('<g clip-path="url(#' + clip_id + ')">')
-    # IRIDE colorata
     parts.append('<circle cx="100" cy="100" r="' + str(iris_radius) + '" fill="' + params["iris"] + '"/>')
-    # PUPILLA BIANCA (tela per il simbolo)
     parts.append('<circle cx="100" cy="100" r="' + str(pupil_radius) + '" fill="white"/>')
-    # SIMBOLO colorato DENTRO la pupilla bianca
     parts.append(render_symbol(params["symbol"], sym_color))
     parts.append('</g>')
-    parts.append(render_lashes(params["shape"], params["lashes"]))
+    parts.append(render_lashes(params["shape"], params["lashes"], lash_color))
     parts.append('</svg>')
     return "".join(parts)
 
 
 def eye_svg(avatar_dict, size=240):
-    keys = ["shape", "iris", "symbol", "lashes", "bg"]
+    keys = ["shape", "iris", "symbol", "symbol_color", "lashes", "lashes_color", "bg"]
     tup = tuple((k, avatar_dict.get(k, DEFAULT_AVATAR[k])) for k in keys)
     return build_eye_svg(tup, size)
 
@@ -429,7 +412,7 @@ if "view" not in st.session_state:
     st.session_state.view = "home"
 
 
-st.markdown('<div class="proto-banner">Prototipo v5 - simbolo colorato dentro la pupilla bianca. Dati salvati su file locale, reset al redeploy.</div>', unsafe_allow_html=True)
+st.markdown('<div class="proto-banner">Prototipo v6 - simbolo grande con colore scelto, ciglia colorate. Dati locali, reset al redeploy.</div>', unsafe_allow_html=True)
 
 
 db = load_db()
@@ -503,8 +486,15 @@ if st.session_state.username is None:
 # ==================== LOGGATO ====================
 user = db[st.session_state.username]
 avatar = user["avatar"]
+# Pulizia backward compat
 if "brow" in avatar:
     del avatar["brow"]
+# Assicura i nuovi campi per profili creati con versioni precedenti
+if "symbol_color" not in avatar:
+    avatar["symbol_color"] = "#130089"
+if "lashes_color" not in avatar:
+    avatar["lashes_color"] = "#1a1a1a"
+
 display_name = user["display_name"]
 
 
@@ -561,7 +551,10 @@ elif st.session_state.view == "editor":
     st.markdown('<div class="section-sub-home">Ogni dettaglio racconta chi sei</div>', unsafe_allow_html=True)
 
     for key, default in [("w_shape", avatar["shape"]), ("w_iris", avatar["iris"]),
-                          ("w_symbol", avatar["symbol"]), ("w_lashes", avatar["lashes"]),
+                          ("w_symbol", avatar["symbol"]),
+                          ("w_symbol_color", avatar.get("symbol_color", "#130089")),
+                          ("w_lashes", avatar["lashes"]),
+                          ("w_lashes_color", avatar.get("lashes_color", "#1a1a1a")),
                           ("w_bg", avatar["bg"])]:
         if key not in st.session_state:
             st.session_state[key] = default
@@ -574,7 +567,9 @@ elif st.session_state.view == "editor":
         "shape": st.session_state.w_shape,
         "iris": st.session_state.w_iris,
         "symbol": st.session_state.w_symbol,
+        "symbol_color": st.session_state.w_symbol_color,
         "lashes": st.session_state.w_lashes,
+        "lashes_color": st.session_state.w_lashes_color,
         "bg": st.session_state.w_bg,
     }
 
@@ -587,11 +582,13 @@ elif st.session_state.view == "editor":
 
         if st.button("Sguardo casuale", use_container_width=True, key="randomize"):
             st.session_state.w_shape = random.choice(SHAPES)["id"]
-            st.session_state.w_iris = random.choice([c[1] for c in IRIS_COLORS])
+            st.session_state.w_iris = random.choice([c[1] for c in COLORS if c[1] != "#ffffff"])
             rand_sym = random.choice(SYMBOLS)
             st.session_state.w_symbol = rand_sym["id"]
             st.session_state.w_symbol_cat = rand_sym["category"]
+            st.session_state.w_symbol_color = random.choice([c[1] for c in COLORS])
             st.session_state.w_lashes = random.choice(LASHES)["id"]
+            st.session_state.w_lashes_color = random.choice([c[1] for c in COLORS])
             st.session_state.w_bg = random.choice(BACKGROUNDS)["id"]
             st.rerun()
 
@@ -609,13 +606,13 @@ elif st.session_state.view == "editor":
             st.session_state.w_shape = _new_shape
             st.rerun()
 
-        # IRIDE
+        # IRIDE (colore)
         st.markdown("**Colore iride**")
-        iris_labels = [c[0] for c in IRIS_COLORS]
-        iris_values = [c[1] for c in IRIS_COLORS]
-        current_iris_idx = iris_values.index(st.session_state.w_iris) if st.session_state.w_iris in iris_values else 0
-        new_iris_label = st.selectbox("Iride", iris_labels, index=current_iris_idx, label_visibility="collapsed", key="__sb_iris")
-        _new_iris = iris_values[iris_labels.index(new_iris_label)]
+        color_labels = [c[0] for c in COLORS]
+        color_values = [c[1] for c in COLORS]
+        current_iris_idx = color_values.index(st.session_state.w_iris) if st.session_state.w_iris in color_values else 0
+        new_iris_label = st.selectbox("Iride", color_labels, index=current_iris_idx, label_visibility="collapsed", key="__sb_iris")
+        _new_iris = color_values[color_labels.index(new_iris_label)]
         if _new_iris != st.session_state.w_iris:
             st.session_state.w_iris = _new_iris
             st.rerun()
@@ -647,15 +644,33 @@ elif st.session_state.view == "editor":
             st.session_state.w_symbol = _new_sym
             st.rerun()
 
-        # CIGLIA
+        # COLORE SIMBOLO
+        st.markdown("**Colore del simbolo**")
+        current_symcol_idx = color_values.index(st.session_state.w_symbol_color) if st.session_state.w_symbol_color in color_values else 1
+        new_symcol_label = st.selectbox("Colore simbolo", color_labels, index=current_symcol_idx, label_visibility="collapsed", key="__sb_symcol")
+        _new_symcol = color_values[color_labels.index(new_symcol_label)]
+        if _new_symcol != st.session_state.w_symbol_color:
+            st.session_state.w_symbol_color = _new_symcol
+            st.rerun()
+
+        # CIGLIA (stile)
         st.markdown("**Ciglia**")
         lash_labels = [l["label"] for l in LASHES]
         lash_ids = [l["id"] for l in LASHES]
         current_lash_idx = lash_ids.index(st.session_state.w_lashes) if st.session_state.w_lashes in lash_ids else 0
-        new_lash_label = st.radio("Ciglia", lash_labels, index=current_lash_idx, horizontal=True, label_visibility="collapsed", key="__rd_lashes")
+        new_lash_label = st.radio("Stile ciglia", lash_labels, index=current_lash_idx, horizontal=True, label_visibility="collapsed", key="__rd_lashes")
         _new_lash = lash_ids[lash_labels.index(new_lash_label)]
         if _new_lash != st.session_state.w_lashes:
             st.session_state.w_lashes = _new_lash
+            st.rerun()
+
+        # COLORE CIGLIA
+        st.markdown("**Colore delle ciglia**")
+        current_lashcol_idx = color_values.index(st.session_state.w_lashes_color) if st.session_state.w_lashes_color in color_values else 10
+        new_lashcol_label = st.selectbox("Colore ciglia", color_labels, index=current_lashcol_idx, label_visibility="collapsed", key="__sb_lashcol")
+        _new_lashcol = color_values[color_labels.index(new_lashcol_label)]
+        if _new_lashcol != st.session_state.w_lashes_color:
+            st.session_state.w_lashes_color = _new_lashcol
             st.rerun()
 
         # SFONDO
@@ -680,7 +695,9 @@ elif st.session_state.view == "editor":
                     "shape": st.session_state.w_shape,
                     "iris": st.session_state.w_iris,
                     "symbol": st.session_state.w_symbol,
+                    "symbol_color": st.session_state.w_symbol_color,
                     "lashes": st.session_state.w_lashes,
+                    "lashes_color": st.session_state.w_lashes_color,
                     "bg": st.session_state.w_bg,
                 }
                 db[st.session_state.username]["visible_in_gallery"] = visible
@@ -689,7 +706,7 @@ elif st.session_state.view == "editor":
                 st.rerun()
         with col_reset:
             if st.button("Annulla", use_container_width=True, key="btn_reset_avatar"):
-                for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_lashes", "w_bg"]:
+                for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_symbol_color", "w_lashes", "w_lashes_color", "w_bg"]:
                     if k in st.session_state:
                         del st.session_state[k]
                 st.rerun()
