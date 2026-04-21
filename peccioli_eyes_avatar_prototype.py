@@ -93,14 +93,6 @@ LASHES = [
     {"id": "none", "label": "Assenti"},
 ]
 
-BROWS = [
-    {"id": "none", "label": "Nessuno"},
-    {"id": "straight", "label": "Diritto"},
-    {"id": "arched", "label": "Arcuato"},
-    {"id": "thick", "label": "Spesso"},
-    {"id": "questioning", "label": "Interrogativo"},
-]
-
 BACKGROUNDS = [
     {"id": "blue-solid", "label": "Blu brand", "color": BRAND_BLUE},
     {"id": "yellow-solid", "label": "Giallo brand", "color": BRAND_YELLOW},
@@ -115,7 +107,6 @@ DEFAULT_AVATAR = {
     "iris": "#FFDE59",
     "symbol": "trumpet",
     "lashes": "classic",
-    "brow": "none",
     "bg": "blue-solid",
 }
 
@@ -132,162 +123,157 @@ def eye_path(shape):
     return ""
 
 
-def render_symbol(sym_id, color):
-    """Simboli piccoli (scala ~0.6) posizionati nell'iride colorata,
-    sopra la pupilla. Centrati su (100, 87) per stare nella metà superiore
-    dell'iride invece che sovrapposti alla pupilla nera."""
-    cy = 88
+def render_symbol(sym_id, color, cy=100):
+    """Simboli piccoli disegnati attorno alla pupilla bianca centrale.
+    cy=100 = centro occhio. Posizionati a distanza dalla pupilla bianca."""
     if sym_id == "torre_peccioli":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<rect x="-5" y="-10" width="10" height="18" fill="' + color + '"/>')
-        parts.append('<polygon points="-7,-10 0,-16 7,-10" fill="' + color + '"/>')
-        parts.append('<rect x="-2" y="-6" width="1.5" height="3" fill="#0a0a0a"/>')
-        parts.append('<rect x="0.5" y="-6" width="1.5" height="3" fill="#0a0a0a"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<rect x="-4" y="-8" width="8" height="14" fill="' + color + '"/>')
+        parts.append('<polygon points="-6,-8 0,-13 6,-8" fill="' + color + '"/>')
+        parts.append('<rect x="-1.5" y="-5" width="1.2" height="2.5" fill="white"/>')
+        parts.append('<rect x="0.3" y="-5" width="1.2" height="2.5" fill="white"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "cipresso":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<ellipse cx="0" cy="-2" rx="4" ry="10" fill="' + color + '"/>')
-        parts.append('<rect x="-0.8" y="7" width="1.6" height="4" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<ellipse cx="0" cy="-2" rx="3" ry="8" fill="' + color + '"/>')
+        parts.append('<rect x="-0.7" y="5" width="1.4" height="3" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "collina":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M -12 6 Q -6 -4 0 2 Q 6 -6 12 6 Z" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M -10 5 Q -5 -3 0 1 Q 5 -5 10 5 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "uliva":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<ellipse cx="0" cy="0" rx="8" ry="4" fill="' + color + '"/>')
-        parts.append('<path d="M -8 0 Q 0 -5 8 0" fill="none" stroke="' + color + '" stroke-width="1.5"/>')
-        parts.append('<ellipse cx="-5" cy="-2" rx="2" ry="1" fill="' + color + '"/>')
-        parts.append('<ellipse cx="0" cy="-3" rx="2" ry="1" fill="' + color + '"/>')
-        parts.append('<ellipse cx="5" cy="-2" rx="2" ry="1" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M -8 2 Q 0 -4 8 2" fill="none" stroke="' + color + '" stroke-width="1.5"/>')
+        parts.append('<ellipse cx="-4" cy="-1" rx="1.8" ry="1" fill="' + color + '"/>')
+        parts.append('<ellipse cx="0" cy="-2" rx="1.8" ry="1" fill="' + color + '"/>')
+        parts.append('<ellipse cx="4" cy="-1" rx="1.8" ry="1" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "trumpet":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M -10 -3 L -4 -5 L -4 5 L -10 3 Z" fill="' + color + '"/>')
-        parts.append('<rect x="-4" y="-2" width="9" height="4" fill="' + color + '"/>')
-        parts.append('<circle cx="8" cy="0" r="4.5" fill="none" stroke="' + color + '" stroke-width="1.8"/>')
-        parts.append('<circle cx="-2" cy="-6" r="1" fill="' + color + '"/>')
-        parts.append('<circle cx="1" cy="-6" r="1" fill="' + color + '"/>')
-        parts.append('<circle cx="4" cy="-6" r="1" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M -9 -3 L -3 -5 L -3 5 L -9 3 Z" fill="' + color + '"/>')
+        parts.append('<rect x="-3" y="-2" width="8" height="4" fill="' + color + '"/>')
+        parts.append('<circle cx="7" cy="0" r="4" fill="none" stroke="' + color + '" stroke-width="1.6"/>')
+        parts.append('<circle cx="-1" cy="-6" r="0.8" fill="' + color + '"/>')
+        parts.append('<circle cx="1.5" cy="-6" r="0.8" fill="' + color + '"/>')
+        parts.append('<circle cx="4" cy="-6" r="0.8" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "mask":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M -10 -2 Q -10 -6 -6 -7 Q 0 -8 6 -7 Q 10 -6 10 -2 Q 10 4 0 6 Q -10 4 -10 -2 Z" fill="' + color + '"/>')
-        parts.append('<ellipse cx="-4" cy="-1" rx="2" ry="2" fill="white"/>')
-        parts.append('<ellipse cx="4" cy="-1" rx="2" ry="2" fill="white"/>')
-        parts.append('<line x1="-10" y1="-4" x2="-14" y2="-8" stroke="' + color + '" stroke-width="1.5"/>')
-        parts.append('<line x1="10" y1="-4" x2="14" y2="-8" stroke="' + color + '" stroke-width="1.5"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M -8 -2 Q -8 -5 -5 -6 Q 0 -7 5 -6 Q 8 -5 8 -2 Q 8 3 0 5 Q -8 3 -8 -2 Z" fill="' + color + '"/>')
+        parts.append('<ellipse cx="-3" cy="-1" rx="1.5" ry="1.5" fill="white"/>')
+        parts.append('<ellipse cx="3" cy="-1" rx="1.5" ry="1.5" fill="white"/>')
+        parts.append('<line x1="-8" y1="-4" x2="-11" y2="-7" stroke="' + color + '" stroke-width="1.2"/>')
+        parts.append('<line x1="8" y1="-4" x2="11" y2="-7" stroke="' + color + '" stroke-width="1.2"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "fleur":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M 0 -9 Q -4 -4 -2 0 Q -4 4 0 9 Q 4 4 2 0 Q 4 -4 0 -9 Z" fill="' + color + '"/>')
-        parts.append('<path d="M -7 -2 Q -9 2 -4 7 Q 0 3 -2 0 Q -5 -5 -7 -2 Z" fill="' + color + '" opacity="0.85"/>')
-        parts.append('<path d="M 7 -2 Q 9 2 4 7 Q 0 3 2 0 Q 5 -5 7 -2 Z" fill="' + color + '" opacity="0.85"/>')
-        parts.append('<rect x="-6" y="-1" width="12" height="2" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M 0 -8 Q -3 -4 -1.5 0 Q -3 4 0 8 Q 3 4 1.5 0 Q 3 -4 0 -8 Z" fill="' + color + '"/>')
+        parts.append('<path d="M -6 -1 Q -8 2 -3 6 Q 0 3 -1.5 1 Q -4 -3 -6 -1 Z" fill="' + color + '" opacity="0.85"/>')
+        parts.append('<path d="M 6 -1 Q 8 2 3 6 Q 0 3 1.5 1 Q 4 -3 6 -1 Z" fill="' + color + '" opacity="0.85"/>')
+        parts.append('<rect x="-5" y="0" width="10" height="1.8" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "riverboat":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M -11 3 L 11 3 L 9 7 L -9 7 Z" fill="' + color + '"/>')
-        parts.append('<rect x="-8" y="-2" width="16" height="5" fill="' + color + '"/>')
-        parts.append('<rect x="-2" y="-8" width="2" height="6" fill="' + color + '"/>')
-        parts.append('<rect x="2" y="-8" width="2" height="6" fill="' + color + '"/>')
-        parts.append('<circle cx="7" cy="1" r="2.5" fill="none" stroke="white" stroke-width="1"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M -9 3 L 9 3 L 7 6 L -7 6 Z" fill="' + color + '"/>')
+        parts.append('<rect x="-6" y="-1" width="12" height="4" fill="' + color + '"/>')
+        parts.append('<rect x="-1.5" y="-6" width="1.5" height="5" fill="' + color + '"/>')
+        parts.append('<rect x="1.5" y="-6" width="1.5" height="5" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "balcony":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<rect x="-10" y="4" width="20" height="2" fill="' + color + '"/>')
-        parts.append('<rect x="-10" y="-6" width="20" height="2" fill="' + color + '"/>')
-        parts.append('<line x1="-8" y1="-4" x2="-8" y2="4" stroke="' + color + '" stroke-width="1"/>')
-        parts.append('<line x1="-4" y1="-4" x2="-4" y2="4" stroke="' + color + '" stroke-width="1"/>')
-        parts.append('<line x1="0" y1="-4" x2="0" y2="4" stroke="' + color + '" stroke-width="1"/>')
-        parts.append('<line x1="4" y1="-4" x2="4" y2="4" stroke="' + color + '" stroke-width="1"/>')
-        parts.append('<line x1="8" y1="-4" x2="8" y2="4" stroke="' + color + '" stroke-width="1"/>')
-        parts.append('<path d="M -6 -4 Q -4 -2 -2 -4 M 2 -4 Q 4 -2 6 -4" fill="none" stroke="' + color + '" stroke-width="1"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<rect x="-8" y="3" width="16" height="1.5" fill="' + color + '"/>')
+        parts.append('<rect x="-8" y="-5" width="16" height="1.5" fill="' + color + '"/>')
+        parts.append('<line x1="-6" y1="-3.5" x2="-6" y2="3" stroke="' + color + '" stroke-width="0.8"/>')
+        parts.append('<line x1="-3" y1="-3.5" x2="-3" y2="3" stroke="' + color + '" stroke-width="0.8"/>')
+        parts.append('<line x1="0" y1="-3.5" x2="0" y2="3" stroke="' + color + '" stroke-width="0.8"/>')
+        parts.append('<line x1="3" y1="-3.5" x2="3" y2="3" stroke="' + color + '" stroke-width="0.8"/>')
+        parts.append('<line x1="6" y1="-3.5" x2="6" y2="3" stroke="' + color + '" stroke-width="0.8"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "note":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<ellipse cx="-3" cy="6" rx="5" ry="3.5" fill="' + color + '" transform="rotate(-20 -3 6)"/>')
-        parts.append('<rect x="1.5" y="-9" width="2" height="17" fill="' + color + '"/>')
-        parts.append('<path d="M 3.5 -9 Q 11 -6 10 1.5" fill="none" stroke="' + color + '" stroke-width="2.2" stroke-linecap="round"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<ellipse cx="-2" cy="5" rx="4" ry="3" fill="' + color + '" transform="rotate(-20 -2 5)"/>')
+        parts.append('<rect x="1" y="-7" width="1.5" height="13" fill="' + color + '"/>')
+        parts.append('<path d="M 2.5 -7 Q 9 -5 8 0.5" fill="none" stroke="' + color + '" stroke-width="1.8" stroke-linecap="round"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "wave":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M -11 -3 Q -5 -8 0 -3 Q 5 2 11 -3" fill="none" stroke="' + color + '" stroke-width="2.2" stroke-linecap="round"/>')
-        parts.append('<path d="M -11 3 Q -5 -2 0 3 Q 5 8 11 3" fill="none" stroke="' + color + '" stroke-width="2.2" stroke-linecap="round"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M -9 -2 Q -4 -6 0 -2 Q 4 2 9 -2" fill="none" stroke="' + color + '" stroke-width="1.8" stroke-linecap="round"/>')
+        parts.append('<path d="M -9 3 Q -4 -1 0 3 Q 4 7 9 3" fill="none" stroke="' + color + '" stroke-width="1.8" stroke-linecap="round"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "people":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<circle cx="-7" cy="-3" r="2.5" fill="' + color + '"/>')
-        parts.append('<rect x="-9.5" y="0" width="5" height="6" rx="1" fill="' + color + '"/>')
-        parts.append('<circle cx="0" cy="-5" r="3" fill="' + color + '"/>')
-        parts.append('<rect x="-3" y="-2" width="6" height="8" rx="1" fill="' + color + '"/>')
-        parts.append('<circle cx="7" cy="-3" r="2.5" fill="' + color + '"/>')
-        parts.append('<rect x="4.5" y="0" width="5" height="6" rx="1" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<circle cx="-6" cy="-2" r="2" fill="' + color + '"/>')
+        parts.append('<rect x="-8" y="1" width="4" height="5" rx="1" fill="' + color + '"/>')
+        parts.append('<circle cx="0" cy="-3" r="2.5" fill="' + color + '"/>')
+        parts.append('<rect x="-2.5" y="0" width="5" height="7" rx="1" fill="' + color + '"/>')
+        parts.append('<circle cx="6" cy="-2" r="2" fill="' + color + '"/>')
+        parts.append('<rect x="4" y="1" width="4" height="5" rx="1" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "book":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M -9 -6 L 0 -4 L 9 -6 L 9 6 L 0 4 L -9 6 Z" fill="' + color + '"/>')
-        parts.append('<line x1="0" y1="-4" x2="0" y2="4" stroke="white" stroke-width="0.8"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M -7 -5 L 0 -3 L 7 -5 L 7 5 L 0 3 L -7 5 Z" fill="' + color + '"/>')
+        parts.append('<line x1="0" y1="-3" x2="0" y2="3" stroke="white" stroke-width="0.8"/>')
         parts.append('</g>')
         return "".join(parts)
 
     if sym_id == "star":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<polygon points="0,-10 3,-3 10,-3 4,2 6,9 0,5 -6,9 -4,2 -10,-3 -3,-3" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<polygon points="0,-8 2.5,-2.5 8,-2.5 3.5,1.5 5,7 0,4 -5,7 -3.5,1.5 -8,-2.5 -2.5,-2.5" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "heart":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M 0 8 C -10 0 -10 -8 -5 -8 C -2 -8 0 -5 0 -3 C 0 -5 2 -8 5 -8 C 10 -8 10 0 0 8 Z" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M 0 6 C -8 -1 -8 -6 -4 -6 C -1.5 -6 0 -4 0 -2 C 0 -4 1.5 -6 4 -6 C 8 -6 8 -1 0 6 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "eye_inside":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M -10 0 Q 0 -7 10 0 Q 0 7 -10 0 Z" fill="none" stroke="' + color + '" stroke-width="1.5"/>')
-        parts.append('<circle cx="0" cy="0" r="3" fill="' + color + '"/>')
-        parts.append('<circle cx="0" cy="0" r="1" fill="white"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M -8 0 Q 0 -5 8 0 Q 0 5 -8 0 Z" fill="none" stroke="' + color + '" stroke-width="1.5"/>')
+        parts.append('<circle cx="0" cy="0" r="2.5" fill="' + color + '"/>')
+        parts.append('<circle cx="0" cy="0" r="0.8" fill="white"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "moon":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<path d="M -3 -8 A 8 8 0 1 0 -3 8 A 5 5 0 1 1 -3 -8 Z" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<path d="M -2 -7 A 6 6 0 1 0 -2 7 A 4 4 0 1 1 -2 -7 Z" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
     if sym_id == "lightning":
         parts = []
-        parts.append('<g transform="translate(100 ' + str(cy) + ')">')
-        parts.append('<polygon points="-2,-10 3,-2 -1,-2 2,10 -4,2 0,2" fill="' + color + '"/>')
+        parts.append('<g transform="translate(100 ' + str(cy - 18) + ')">')
+        parts.append('<polygon points="-1.5,-8 2.5,-1.5 -0.5,-1.5 1.5,8 -3,1.5 0,1.5" fill="' + color + '"/>')
         parts.append('</g>')
         return "".join(parts)
 
@@ -332,29 +318,6 @@ def render_lashes(shape, style):
     return "".join(out)
 
 
-def render_brow(shape, style):
-    if style == "none":
-        return ""
-    if shape == "round":
-        top_y = 28
-    elif shape == "almond":
-        top_y = 38
-    elif shape == "wide":
-        top_y = 28
-    else:
-        top_y = 55
-
-    if style == "straight":
-        return '<rect x="60" y="' + str(top_y) + '" width="80" height="4" fill="#1a1a1a" rx="2"/>'
-    if style == "arched":
-        return '<path d="M 60 ' + str(top_y + 3) + ' Q 100 ' + str(top_y - 6) + ' 140 ' + str(top_y + 3) + '" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round"/>'
-    if style == "thick":
-        return '<path d="M 55 ' + str(top_y + 3) + ' Q 100 ' + str(top_y - 4) + ' 145 ' + str(top_y + 3) + '" fill="none" stroke="#1a1a1a" stroke-width="7" stroke-linecap="round"/>'
-    if style == "questioning":
-        return '<path d="M 60 ' + str(top_y + 4) + ' Q 85 ' + str(top_y - 3) + ' 110 ' + str(top_y - 1) + ' Q 130 ' + str(top_y - 8) + ' 140 ' + str(top_y - 4) + '" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round"/>'
-    return ""
-
-
 def render_background(bg_id):
     bg = next((b for b in BACKGROUNDS if b["id"] == bg_id), BACKGROUNDS[0])
     out = ['<rect width="200" height="200" fill="' + bg["color"] + '"/>']
@@ -378,12 +341,11 @@ def contrast_on(hex_color):
     lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255
     if lum > 0.6:
         return "#130089"
-    return "#FFDE59"
+    return "#0a0a0a"
 
 
 @st.cache_data(show_spinner=False)
 def build_eye_svg(params_tuple, size=240):
-    """Cached render. params_tuple è una tupla hashable per permettere cache."""
     params = dict(params_tuple)
     eye_d = eye_path(params["shape"])
 
@@ -406,21 +368,24 @@ def build_eye_svg(params_tuple, size=240):
 
     symbol_color = contrast_on(params["iris"])
 
-    # ID deterministico basato sul contenuto invece che random
-    content = params["shape"] + params["iris"] + params["symbol"] + params["bg"]
+    content = params["shape"] + params["iris"] + params["symbol"] + params["bg"] + params["lashes"]
     clip_id = "eye-clip-" + hashlib.md5(content.encode()).hexdigest()[:8]
+
+    pupil_radius = iris_radius * 0.35
 
     parts = []
     parts.append('<svg viewBox="0 0 200 200" width="' + str(size) + '" height="' + str(size) + '" xmlns="http://www.w3.org/2000/svg">')
     parts.append('<defs><clipPath id="' + clip_id + '"><path d="' + eye_d + '"/></clipPath></defs>')
     parts.append(render_background(params["bg"]))
-    parts.append(render_brow(params["shape"], params.get("brow", "none")))
     parts.append('<path d="' + eye_d + '" fill="' + sclera_color + '" stroke="' + stroke_color + '" stroke-width="3"/>')
     parts.append('<g clip-path="url(#' + clip_id + ')">')
     parts.append('<circle cx="100" cy="100" r="' + str(iris_radius) + '" fill="' + params["iris"] + '"/>')
-    parts.append('<circle cx="100" cy="100" r="' + str(iris_radius * 0.45) + '" fill="#0a0a0a"/>')
-    parts.append('<circle cx="' + str(100 + iris_radius * 0.3) + '" cy="' + str(100 - iris_radius * 0.35) + '" r="' + str(iris_radius * 0.18) + '" fill="white" opacity="0.85"/>')
-    parts.append(render_symbol(params["symbol"], symbol_color))
+    # SIMBOLO nella parte alta dell'iride (sopra la pupilla)
+    parts.append(render_symbol(params["symbol"], symbol_color, cy=100))
+    # PUPILLA BIANCA (risalta sul colore iride)
+    parts.append('<circle cx="100" cy="100" r="' + str(pupil_radius) + '" fill="white"/>')
+    # Piccolo highlight scuro per dare profondità
+    parts.append('<circle cx="' + str(100 - pupil_radius * 0.3) + '" cy="' + str(100 + pupil_radius * 0.3) + '" r="' + str(pupil_radius * 0.2) + '" fill="' + symbol_color + '" opacity="0.25"/>')
     parts.append('</g>')
     parts.append(render_lashes(params["shape"], params["lashes"]))
     parts.append('</svg>')
@@ -428,8 +393,7 @@ def build_eye_svg(params_tuple, size=240):
 
 
 def eye_svg(avatar_dict, size=240):
-    """Wrapper che converte dict in tuple per la cache."""
-    keys = ["shape", "iris", "symbol", "lashes", "brow", "bg"]
+    keys = ["shape", "iris", "symbol", "lashes", "bg"]
     tup = tuple((k, avatar_dict.get(k, DEFAULT_AVATAR[k])) for k in keys)
     return build_eye_svg(tup, size)
 
@@ -455,7 +419,6 @@ css_lines.append('.section-title-home { font-family: "Playfair Display", serif; 
 css_lines.append('.section-sub-home { font-family: "Lobster Two", cursive; font-style: italic; font-weight: 700; color: ' + BRAND_YELLOW + '; font-size: 1.05rem; margin-bottom: 1rem; }')
 css_lines.append('.eye-card { background: white; border: 1px solid rgba(19,0,137,0.08); border-radius: 18px; padding: 1rem; text-align: center; box-shadow: 0 4px 16px rgba(19,0,137,0.06); }')
 css_lines.append('.eye-card-name { font-family: "Playfair Display", serif; font-weight: 800; color: ' + BRAND_BLUE + '; font-size: 0.95rem; margin-top: 0.5rem; }')
-css_lines.append('.cat-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: ' + BRAND_BLUE + '; opacity: 0.7; margin-top: 0.8rem; margin-bottom: 0.3rem; }')
 css_lines.append('</style>')
 
 st.markdown("\n".join(css_lines), unsafe_allow_html=True)
@@ -467,17 +430,32 @@ if "username" not in st.session_state:
 if "view" not in st.session_state:
     st.session_state.view = "home"
 
-# Inizializzazione dello stato widget (fondamentale per fix bug radio)
-def ensure_avatar_state(avatar_dict):
-    """Assicura che i valori dei widget siano sincronizzati con l'avatar salvato.
-    Questo previene il bug 'clicco su A e mi prende B'."""
-    for k, v in avatar_dict.items():
-        widget_key = "w_" + k
-        if widget_key not in st.session_state:
-            st.session_state[widget_key] = v
+
+# ==================== CALLBACKS (fix lentezza) ====================
+def on_shape_change():
+    st.session_state.w_shape = st.session_state._sel_shape_id
+
+def on_iris_change():
+    st.session_state.w_iris = st.session_state._sel_iris_val
+
+def on_cat_change():
+    st.session_state.w_symbol_cat = st.session_state._sel_cat_id
+    # Reset simbolo alla prima voce della nuova categoria
+    cat_syms = [s for s in SYMBOLS if s["category"] == st.session_state.w_symbol_cat]
+    if cat_syms:
+        st.session_state.w_symbol = cat_syms[0]["id"]
+
+def on_symbol_change():
+    st.session_state.w_symbol = st.session_state._sel_symbol_id
+
+def on_lashes_change():
+    st.session_state.w_lashes = st.session_state._sel_lashes_id
+
+def on_bg_change():
+    st.session_state.w_bg = st.session_state._sel_bg_id
 
 
-st.markdown('<div class="proto-banner">Prototipo v3 - i dati si salvano sul server. Su Streamlit Cloud possono essere cancellati quando viene ridistribuito il codice.</div>', unsafe_allow_html=True)
+st.markdown('<div class="proto-banner">Prototipo v4 - pupilla bianca, simboli sopra iride. Salvataggio su file locale, reset al redeploy.</div>', unsafe_allow_html=True)
 
 
 db = load_db()
@@ -485,7 +463,7 @@ db = load_db()
 
 # ==================== LOGIN ====================
 if st.session_state.username is None:
-    login_hero = '<div class="login-hero"><div class="login-hero-title">Peccioli Eyes</div><div class="login-hero-sub">to New Orleans</div><div class="login-hero-year">2026</div><p style="color:rgba(255,255,255,0.85);margin-top:1.5rem;font-size:0.95rem;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6;">Crea il tuo sguardo personale. Scegli un nome e una password che ricorderai - niente email, niente dati personali.</p></div>'
+    login_hero = '<div class="login-hero"><div class="login-hero-title">Peccioli Eyes</div><div class="login-hero-sub">to New Orleans</div><div class="login-hero-year">2026</div><p style="color:rgba(255,255,255,0.85);margin-top:1.5rem;font-size:0.95rem;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6;">Crea il tuo sguardo personale. Scegli un nome e una password che ricorderai.</p></div>'
     st.markdown(login_hero, unsafe_allow_html=True)
 
     tab_login, tab_new = st.tabs(["Ho gia un profilo", "Creane uno nuovo"])
@@ -501,24 +479,23 @@ if st.session_state.username is None:
             if not u:
                 st.error("Inserisci il tuo nome")
             elif u not in db:
-                st.error("Non esiste un profilo con il nome '" + str(login_user) + "'. Creane uno nuovo dalla tab accanto.")
+                st.error("Non esiste un profilo con il nome '" + str(login_user) + "'.")
             elif db[u].get("password") != login_pwd:
-                st.error("Password sbagliata. Riprova.")
+                st.error("Password sbagliata.")
             else:
                 st.session_state.username = u
-                # Reset widget state al login
-                for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_lashes", "w_brow", "w_bg"]:
-                    if k in st.session_state:
+                for k in list(st.session_state.keys()):
+                    if k.startswith("w_") or k.startswith("_sel_"):
                         del st.session_state[k]
                 st.rerun()
 
     with tab_new:
         c1, c2 = st.columns(2)
         with c1:
-            new_user = st.text_input("Scegli un nome", key="new_user", placeholder="Es. marco, giulia93...")
+            new_user = st.text_input("Scegli un nome", key="new_user", placeholder="Es. marco...")
         with c2:
-            new_pwd = st.text_input("Inventa una password", type="password", key="new_pwd", placeholder="Qualcosa che ricordi")
-        st.caption("Il nome sara visibile agli altri nella galleria. La password la ricordi solo tu.")
+            new_pwd = st.text_input("Inventa una password", type="password", key="new_pwd")
+        st.caption("Il nome sara visibile agli altri nella galleria.")
         if st.button("Crea il mio profilo", key="btn_new", use_container_width=True):
             u = (new_user or "").strip().lower()
             if not u:
@@ -528,7 +505,7 @@ if st.session_state.username is None:
             elif not new_pwd or len(new_pwd) < 3:
                 st.error("La password deve avere almeno 3 caratteri")
             elif u in db:
-                st.error("Un profilo con il nome '" + str(new_user) + "' esiste gia. Scegline un altro.")
+                st.error("Un profilo con questo nome esiste gia.")
             else:
                 db[u] = {
                     "display_name": new_user.strip(),
@@ -540,10 +517,10 @@ if st.session_state.username is None:
                 save_db(db)
                 st.session_state.username = u
                 st.session_state.view = "editor"
-                for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_lashes", "w_brow", "w_bg"]:
-                    if k in st.session_state:
+                for k in list(st.session_state.keys()):
+                    if k.startswith("w_") or k.startswith("_sel_"):
                         del st.session_state[k]
-                st.success("Profilo creato! Ora crea il tuo sguardo.")
+                st.success("Profilo creato!")
                 st.rerun()
 
     st.stop()
@@ -552,9 +529,9 @@ if st.session_state.username is None:
 # ==================== LOGGATO ====================
 user = db[st.session_state.username]
 avatar = user["avatar"]
-# Assicura sempre che il campo brow esista (backward compat)
-if "brow" not in avatar:
-    avatar["brow"] = "none"
+# Pulizia: rimuovi campo brow se esiste (legacy v3)
+if "brow" in avatar:
+    del avatar["brow"]
 display_name = user["display_name"]
 
 
@@ -582,7 +559,7 @@ with col_nav:
             st.session_state.username = None
             st.session_state.view = "home"
             for k in list(st.session_state.keys()):
-                if k.startswith("w_"):
+                if k.startswith("w_") or k.startswith("_sel_"):
                     del st.session_state[k]
             st.rerun()
 
@@ -597,7 +574,7 @@ if st.session_state.view == "home":
         home_card = '<div style="background:' + BRAND_BLUE_LIGHT + ';border-radius:24px;padding:1.5rem;text-align:center;">' + big_svg + '<div style="margin-top:0.8rem;font-family:\'Lobster Two\',cursive;font-style:italic;font-size:1.3rem;color:' + BRAND_BLUE + ';">Il tuo sguardo</div></div>'
         st.markdown(home_card, unsafe_allow_html=True)
     with c2:
-        home_text = '<div class="section-title-home">Ciao, ' + display_name + '</div><div class="section-sub-home">Benvenuto nel tuo portale</div><p style="color:#3a4a5c;line-height:1.7;font-size:0.95rem;">Questo e il tuo spazio personale dentro <strong>Peccioli Eyes</strong>. Il tuo sguardo e unico e ti rappresenta nel viaggio verso New Orleans.</p><p style="color:#3a4a5c;line-height:1.7;font-size:0.95rem;">Puoi modificarlo in qualunque momento dalla sezione <strong>Sguardo</strong>, e vedere tutti gli altri nella <strong>Galleria</strong>.</p>'
+        home_text = '<div class="section-title-home">Ciao, ' + display_name + '</div><div class="section-sub-home">Benvenuto nel tuo portale</div><p style="color:#3a4a5c;line-height:1.7;font-size:0.95rem;">Questo e il tuo spazio personale dentro <strong>Peccioli Eyes</strong>. Il tuo sguardo e unico e ti rappresenta nel viaggio verso New Orleans.</p>'
         st.markdown(home_text, unsafe_allow_html=True)
 
         total_users = len(db)
@@ -610,30 +587,31 @@ elif st.session_state.view == "editor":
     st.markdown('<div class="section-title-home">Crea il tuo sguardo</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-sub-home">Ogni dettaglio racconta chi sei</div>', unsafe_allow_html=True)
 
-    # Inizializza widget state dalla prima volta o dopo login
-    ensure_avatar_state(avatar)
+    # Inizializza w_* dai valori attuali dell'avatar (solo prima volta)
+    for key, default in [("w_shape", avatar["shape"]), ("w_iris", avatar["iris"]),
+                          ("w_symbol", avatar["symbol"]), ("w_lashes", avatar["lashes"]),
+                          ("w_bg", avatar["bg"])]:
+        if key not in st.session_state:
+            st.session_state[key] = default
 
-    # Determina categoria iniziale del simbolo corrente
-    current_symbol = avatar.get("symbol", "trumpet")
-    current_sym_obj = next((s for s in SYMBOLS if s["id"] == current_symbol), SYMBOLS[0])
     if "w_symbol_cat" not in st.session_state:
+        current_sym_obj = next((s for s in SYMBOLS if s["id"] == st.session_state.w_symbol), SYMBOLS[0])
         st.session_state.w_symbol_cat = current_sym_obj["category"]
+
+    # Avatar live letto SOLO dai session_state w_*
+    live_avatar = {
+        "shape": st.session_state.w_shape,
+        "iris": st.session_state.w_iris,
+        "symbol": st.session_state.w_symbol,
+        "lashes": st.session_state.w_lashes,
+        "bg": st.session_state.w_bg,
+    }
 
     c_preview, c_controls = st.columns([1, 1.3])
 
-    # Costruisci avatar live dai widget state (NON modifichiamo avatar direttamente)
-    live_avatar = {
-        "shape": st.session_state.get("w_shape", avatar["shape"]),
-        "iris": st.session_state.get("w_iris", avatar["iris"]),
-        "symbol": st.session_state.get("w_symbol", avatar["symbol"]),
-        "lashes": st.session_state.get("w_lashes", avatar["lashes"]),
-        "brow": st.session_state.get("w_brow", avatar.get("brow", "none")),
-        "bg": st.session_state.get("w_bg", avatar["bg"]),
-    }
-
     with c_preview:
         preview_svg = eye_svg(live_avatar, size=300)
-        preview_card = '<div style="background:' + BRAND_BLUE_LIGHT + ';border-radius:20px;padding:1.5rem;text-align:center;position:sticky;top:1rem;">' + preview_svg + '<div style="margin-top:0.8rem;font-size:0.85rem;color:' + BRAND_BLUE + ';font-weight:500;">Anteprima dal vivo</div></div>'
+        preview_card = '<div style="background:' + BRAND_BLUE_LIGHT + ';border-radius:20px;padding:1.5rem;text-align:center;">' + preview_svg + '<div style="margin-top:0.8rem;font-size:0.85rem;color:' + BRAND_BLUE + ';font-weight:500;">Anteprima dal vivo</div></div>'
         st.markdown(preview_card, unsafe_allow_html=True)
 
         if st.button("Sguardo casuale", use_container_width=True, key="randomize"):
@@ -643,70 +621,82 @@ elif st.session_state.view == "editor":
             st.session_state.w_symbol = rand_sym["id"]
             st.session_state.w_symbol_cat = rand_sym["category"]
             st.session_state.w_lashes = random.choice(LASHES)["id"]
-            st.session_state.w_brow = random.choice(BROWS)["id"]
             st.session_state.w_bg = random.choice(BACKGROUNDS)["id"]
             st.rerun()
 
-        st.caption("L'anteprima e dal vivo. Clicca **Salva** in fondo per rendere permanenti le scelte.")
+        st.caption("Clicca su **Salva** per rendere permanenti le scelte.")
 
     with c_controls:
+        # FORMA
         st.markdown("**Forma dell'occhio**")
         shape_labels = [s["label"] for s in SHAPES]
         shape_ids = [s["id"] for s in SHAPES]
-        default_idx = shape_ids.index(live_avatar["shape"]) if live_avatar["shape"] in shape_ids else 0
-        new_shape_label = st.radio("Forma", shape_labels, index=default_idx, horizontal=True, label_visibility="collapsed", key="_sel_shape")
-        st.session_state.w_shape = shape_ids[shape_labels.index(new_shape_label)]
+        current_shape_idx = shape_ids.index(st.session_state.w_shape) if st.session_state.w_shape in shape_ids else 0
+        new_shape_label = st.radio("Forma", shape_labels, index=current_shape_idx, horizontal=True, label_visibility="collapsed", key="__rd_shape")
+        st.session_state._sel_shape_id = shape_ids[shape_labels.index(new_shape_label)]
+        if st.session_state._sel_shape_id != st.session_state.w_shape:
+            st.session_state.w_shape = st.session_state._sel_shape_id
+            st.rerun()
 
+        # IRIDE
         st.markdown("**Colore iride**")
         iris_labels = [c[0] for c in IRIS_COLORS]
         iris_values = [c[1] for c in IRIS_COLORS]
-        default_idx = iris_values.index(live_avatar["iris"]) if live_avatar["iris"] in iris_values else 0
-        new_iris_label = st.selectbox("Iride", iris_labels, index=default_idx, label_visibility="collapsed", key="_sel_iris")
-        st.session_state.w_iris = iris_values[iris_labels.index(new_iris_label)]
+        current_iris_idx = iris_values.index(st.session_state.w_iris) if st.session_state.w_iris in iris_values else 0
+        new_iris_label = st.selectbox("Iride", iris_labels, index=current_iris_idx, label_visibility="collapsed", key="__sb_iris")
+        new_iris_val = iris_values[iris_labels.index(new_iris_label)]
+        if new_iris_val != st.session_state.w_iris:
+            st.session_state.w_iris = new_iris_val
+            st.rerun()
 
+        # CATEGORIA SIMBOLI
         st.markdown("**Simbolo nell'iride**")
         cat_labels = [c[1] for c in SYMBOL_CATEGORIES]
         cat_ids = [c[0] for c in SYMBOL_CATEGORIES]
-        default_cat_idx = cat_ids.index(st.session_state.w_symbol_cat) if st.session_state.w_symbol_cat in cat_ids else 0
-        selected_cat_label = st.radio("Categoria", cat_labels, index=default_cat_idx, horizontal=True, label_visibility="collapsed", key="_sel_cat")
+        current_cat_idx = cat_ids.index(st.session_state.w_symbol_cat) if st.session_state.w_symbol_cat in cat_ids else 0
+        selected_cat_label = st.radio("Categoria", cat_labels, index=current_cat_idx, horizontal=True, label_visibility="collapsed", key="__rd_cat")
         selected_cat_id = cat_ids[cat_labels.index(selected_cat_label)]
-        st.session_state.w_symbol_cat = selected_cat_id
+        if selected_cat_id != st.session_state.w_symbol_cat:
+            st.session_state.w_symbol_cat = selected_cat_id
+            cat_syms = [s for s in SYMBOLS if s["category"] == selected_cat_id]
+            if cat_syms:
+                st.session_state.w_symbol = cat_syms[0]["id"]
+            st.rerun()
 
-        # Lista simboli della categoria scelta
-        cat_symbols = [s for s in SYMBOLS if s["category"] == selected_cat_id]
+        # SIMBOLO
+        cat_symbols = [s for s in SYMBOLS if s["category"] == st.session_state.w_symbol_cat]
         sym_labels = [s["label"] for s in cat_symbols]
         sym_ids = [s["id"] for s in cat_symbols]
+        if st.session_state.w_symbol not in sym_ids:
+            st.session_state.w_symbol = sym_ids[0]
+        current_sym_idx = sym_ids.index(st.session_state.w_symbol)
+        new_sym_label = st.radio("Simbolo", sym_labels, index=current_sym_idx, label_visibility="collapsed", key="__rd_sym_" + st.session_state.w_symbol_cat)
+        new_sym_id = sym_ids[sym_labels.index(new_sym_label)]
+        if new_sym_id != st.session_state.w_symbol:
+            st.session_state.w_symbol = new_sym_id
+            st.rerun()
 
-        # Se il simbolo corrente non è in questa categoria, resetta al primo
-        if live_avatar["symbol"] not in sym_ids:
-            current_sym_in_cat = sym_ids[0]
-        else:
-            current_sym_in_cat = live_avatar["symbol"]
-
-        default_idx = sym_ids.index(current_sym_in_cat)
-        new_sym_label = st.radio("Simbolo", sym_labels, index=default_idx, label_visibility="collapsed", key="_sel_sym_" + selected_cat_id)
-        st.session_state.w_symbol = sym_ids[sym_labels.index(new_sym_label)]
-
+        # CIGLIA
         st.markdown("**Ciglia**")
         lash_labels = [l["label"] for l in LASHES]
         lash_ids = [l["id"] for l in LASHES]
-        default_idx = lash_ids.index(live_avatar["lashes"]) if live_avatar["lashes"] in lash_ids else 0
-        new_lash_label = st.radio("Ciglia", lash_labels, index=default_idx, horizontal=True, label_visibility="collapsed", key="_sel_lashes")
-        st.session_state.w_lashes = lash_ids[lash_labels.index(new_lash_label)]
+        current_lash_idx = lash_ids.index(st.session_state.w_lashes) if st.session_state.w_lashes in lash_ids else 0
+        new_lash_label = st.radio("Ciglia", lash_labels, index=current_lash_idx, horizontal=True, label_visibility="collapsed", key="__rd_lashes")
+        new_lash_id = lash_ids[lash_labels.index(new_lash_label)]
+        if new_lash_id != st.session_state.w_lashes:
+            st.session_state.w_lashes = new_lash_id
+            st.rerun()
 
-        st.markdown("**Sopracciglio**")
-        brow_labels = [b["label"] for b in BROWS]
-        brow_ids = [b["id"] for b in BROWS]
-        default_idx = brow_ids.index(live_avatar["brow"]) if live_avatar["brow"] in brow_ids else 0
-        new_brow_label = st.radio("Sopracciglio", brow_labels, index=default_idx, horizontal=True, label_visibility="collapsed", key="_sel_brow")
-        st.session_state.w_brow = brow_ids[brow_labels.index(new_brow_label)]
-
+        # SFONDO
         st.markdown("**Sfondo**")
         bg_labels = [b["label"] for b in BACKGROUNDS]
         bg_ids = [b["id"] for b in BACKGROUNDS]
-        default_idx = bg_ids.index(live_avatar["bg"]) if live_avatar["bg"] in bg_ids else 0
-        new_bg_label = st.radio("Sfondo", bg_labels, index=default_idx, horizontal=True, label_visibility="collapsed", key="_sel_bg")
-        st.session_state.w_bg = bg_ids[bg_labels.index(new_bg_label)]
+        current_bg_idx = bg_ids.index(st.session_state.w_bg) if st.session_state.w_bg in bg_ids else 0
+        new_bg_label = st.radio("Sfondo", bg_labels, index=current_bg_idx, horizontal=True, label_visibility="collapsed", key="__rd_bg")
+        new_bg_id = bg_ids[bg_labels.index(new_bg_label)]
+        if new_bg_id != st.session_state.w_bg:
+            st.session_state.w_bg = new_bg_id
+            st.rerun()
 
         st.markdown("---")
         st.markdown("**Privacy**")
@@ -720,7 +710,6 @@ elif st.session_state.view == "editor":
                     "iris": st.session_state.w_iris,
                     "symbol": st.session_state.w_symbol,
                     "lashes": st.session_state.w_lashes,
-                    "brow": st.session_state.w_brow,
                     "bg": st.session_state.w_bg,
                 }
                 db[st.session_state.username]["visible_in_gallery"] = visible
@@ -729,7 +718,7 @@ elif st.session_state.view == "editor":
                 st.rerun()
         with col_reset:
             if st.button("Annulla", use_container_width=True, key="btn_reset_avatar"):
-                for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_lashes", "w_brow", "w_bg"]:
+                for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_lashes", "w_bg"]:
                     if k in st.session_state:
                         del st.session_state[k]
                 st.rerun()
