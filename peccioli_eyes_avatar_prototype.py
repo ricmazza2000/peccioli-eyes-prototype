@@ -98,13 +98,15 @@ BACKGROUNDS = [
     {"id": "blue-solid", "label": "Blu brand", "color": BRAND_BLUE},
     {"id": "yellow-solid", "label": "Giallo brand", "color": BRAND_YELLOW},
     {"id": "white-solid", "label": "Avorio", "color": "#fafafa"},
-    {"id": "stars", "label": "Cielo stellato", "color": BRAND_BLUE_DARK},
-    {"id": "nola_skyline", "label": "Skyline New Orleans", "color": "#1a2f6c"},
     {"id": "nola_jazz", "label": "Jazz notturno", "color": "#2a0a3a"},
     {"id": "peccioli_hills", "label": "Colline Peccioli", "color": "#2ea36a"},
-    {"id": "peccioli_tower", "label": "Campanile di Peccioli", "color": "#f5d896"},
-    {"id": "sunset_mississippi", "label": "Tramonto Mississippi", "color": "#c84a1e"},
-    {"id": "mardigras", "label": "Mardi Gras", "color": "#4a1a5a"},
+    {"id": "ghizzano", "label": "Ghizzano", "color": "#c8226a"},
+    {"id": "muro_occhi", "label": "Muro degli Occhi", "color": "#8a7a6a"},
+    {"id": "macca", "label": "MACCA al tramonto", "color": "#d88a7a"},
+    {"id": "peccioli_tower", "label": "Campanile di Peccioli", "color": "#b0a89c"},
+    {"id": "french_quarter", "label": "French Quarter", "color": "#a85a3a"},
+    {"id": "sunset_mississippi", "label": "Tramonto Mississippi", "color": "#ff9a8b"},
+    {"id": "mardigras", "label": "Mardi Gras", "color": "#4ba5c5"},
 ]
 
 DEFAULT_AVATAR = {
@@ -391,26 +393,7 @@ def render_background(bg_id):
     bg = next((b for b in BACKGROUNDS if b["id"] == bg_id), BACKGROUNDS[0])
     out = ['<rect width="200" height="200" fill="' + bg["color"] + '"/>']
 
-    if bg_id == "stars":
-        stars = [(30,40),(160,35),(50,160),(170,140),(100,30),(25,110),(175,80),(90,170),(130,60),(60,80),(150,170),(20,70)]
-        for sx, sy in stars:
-            out.append('<circle cx="' + str(sx) + '" cy="' + str(sy) + '" r="1.3" fill="' + BRAND_YELLOW + '"/>')
-        out.append('<circle cx="165" cy="40" r="10" fill="' + BRAND_YELLOW + '" opacity="0.85"/>')
-
-    elif bg_id == "nola_skyline":
-        out.append('<rect y="0" width="200" height="130" fill="#1a2f6c"/>')
-        out.append('<rect y="130" width="200" height="70" fill="#0a1548"/>')
-        out.append('<circle cx="30" cy="30" r="1" fill="white" opacity="0.9"/>')
-        out.append('<circle cx="80" cy="20" r="1.2" fill="white" opacity="0.9"/>')
-        out.append('<circle cx="150" cy="40" r="1" fill="white" opacity="0.8"/>')
-        out.append('<polygon points="0,200 0,150 15,145 25,130 40,135 55,120 70,125 85,105 100,115 115,100 130,110 145,90 160,105 175,95 190,100 200,90 200,200" fill="#05082a"/>')
-        out.append('<rect x="25" y="140" width="1.5" height="2" fill="' + BRAND_YELLOW + '"/>')
-        out.append('<rect x="70" y="135" width="1.5" height="2" fill="' + BRAND_YELLOW + '"/>')
-        out.append('<rect x="115" y="115" width="1.5" height="2" fill="' + BRAND_YELLOW + '"/>')
-        out.append('<rect x="135" y="120" width="1.5" height="2" fill="' + BRAND_YELLOW + '"/>')
-        out.append('<rect x="165" y="110" width="1.5" height="2" fill="' + BRAND_YELLOW + '"/>')
-
-    elif bg_id == "nola_jazz":
+    if bg_id == "nola_jazz":
         out.append('<rect width="200" height="200" fill="#2a0a3a"/>')
         out.append('<g opacity="0.25" fill="' + BRAND_YELLOW + '">')
         out.append('<ellipse cx="30" cy="45" rx="5" ry="3.5" transform="rotate(-20 30 45)"/>')
@@ -435,47 +418,440 @@ def render_background(bg_id):
         out.append('<ellipse cx="165" cy="140" rx="3" ry="10" fill="#1a5028"/>')
         out.append('<path d="M 0 180 Q 100 170 200 182 L 200 200 L 0 200 Z" fill="#1a7a4a"/>')
 
-    elif bg_id == "peccioli_tower":
-        out.append('<rect y="0" width="200" height="160" fill="#b8dcf0"/>')
-        out.append('<rect y="160" width="200" height="40" fill="#d4b888"/>')
-        out.append('<g opacity="0.35" fill="#8b6914">')
-        out.append('<polygon points="85,160 115,160 112,100 88,100"/>')
-        out.append('<polygon points="86,99 114,99 111,65 89,65"/>')
-        out.append('<path d="M 93 90 L 93 78 Q 96 74 99 78 L 99 90 Z" fill="#6b4d0a"/>')
-        out.append('<path d="M 101 90 L 101 78 Q 104 74 107 78 L 107 90 Z" fill="#6b4d0a"/>')
-        out.append('<polygon points="88,64 112,64 110,35 90,35"/>')
-        out.append('<polygon points="87,34 113,34 100,10"/>')
+    elif bg_id == "ghizzano":
+        # Cielo chiaro
+        out.append('<defs><linearGradient id="sky-ghiz" x1="0" x2="0" y1="0" y2="1">')
+        out.append('<stop offset="0%" stop-color="#b8c8d8"/><stop offset="100%" stop-color="#d8ddd5"/></linearGradient>')
+        out.append('<linearGradient id="street-ghiz" x1="0" x2="0" y1="0" y2="1">')
+        out.append('<stop offset="0%" stop-color="#b8b0a0"/><stop offset="100%" stop-color="#d0cabc"/></linearGradient></defs>')
+        out.append('<rect width="200" height="67" fill="url(#sky-ghiz)"/>')
+        # Strada in prospettiva
+        out.append('<polygon points="0,200 200,200 125,67 75,67" fill="url(#street-ghiz)"/>')
+        out.append('<g stroke="#8a8070" stroke-width="0.5" opacity="0.4">')
+        out.append('<line x1="50" y1="150" x2="87" y2="75"/>')
+        out.append('<line x1="150" y1="150" x2="113" y2="75"/>')
+        out.append('<line x1="25" y1="183" x2="80" y2="70"/>')
+        out.append('<line x1="175" y1="183" x2="120" y2="70"/>')
         out.append('</g>')
-        out.append('<ellipse cx="40" cy="30" rx="12" ry="4" fill="white" opacity="0.6"/>')
-        out.append('<ellipse cx="170" cy="45" rx="10" ry="3" fill="white" opacity="0.55"/>')
+        # Casa fucsia sinistra
+        out.append('<polygon points="0,67 75,67 75,200 0,200" fill="#c8226a"/>')
+        out.append('<rect x="13" y="92" width="17" height="20" fill="#f4d03f" stroke="#2a1010" stroke-width="0.8"/>')
+        out.append('<rect x="43" y="117" width="24" height="67" fill="#8a1040" stroke="#2a1010" stroke-width="0.8"/>')
+        out.append('<rect x="50" y="125" width="10" height="13" fill="#f4d03f"/>')
+        out.append('<rect x="0" y="67" width="75" height="3" fill="#8a1040"/>')
+        # Casa verde destra
+        out.append('<polygon points="125,67 200,67 200,200 125,200" fill="#5ab848"/>')
+        out.append('<rect x="158" y="117" width="30" height="75" fill="#4a2818" stroke="#2a1008" stroke-width="0.8"/>')
+        out.append('<rect x="162" y="120" width="23" height="23" fill="none" stroke="#2a1008" stroke-width="0.6"/>')
+        out.append('<rect x="162" y="147" width="23" height="23" fill="none" stroke="#2a1008" stroke-width="0.6"/>')
+        out.append('<rect x="130" y="87" width="20" height="17" fill="#c82828" stroke="#2a1010" stroke-width="0.8"/>')
+        out.append('<rect x="125" y="67" width="75" height="3" fill="#3a8028"/>')
+        # Casa lime centrale
+        out.append('<polygon points="87,77 113,77 113,150 87,150" fill="#a8d430"/>')
+        out.append('<rect x="90" y="87" width="7" height="8" fill="#3a2418"/>')
+        out.append('<rect x="100" y="87" width="7" height="8" fill="#3a2418"/>')
+        out.append('<rect x="90" y="108" width="7" height="8" fill="#3a2418"/>')
+        out.append('<rect x="100" y="108" width="7" height="8" fill="#3a2418"/>')
+        out.append('<rect x="93" y="130" width="14" height="20" fill="#6a4020"/>')
+        out.append('<polygon points="87,77 113,77 100,68" fill="#8aa028"/>')
+        # Casa terracotta
+        out.append('<polygon points="67,70 87,70 87,142 67,142" fill="#a04830"/>')
+        out.append('<rect x="72" y="80" width="7" height="8" fill="#2a1008"/>')
+        out.append('<rect x="80" y="80" width="4" height="8" fill="#2a1008"/>')
+        out.append('<rect x="72" y="100" width="7" height="8" fill="#2a1008"/>')
+        # Casa ocra
+        out.append('<polygon points="92,67 108,67 108,80 92,80" fill="#d49040"/>')
+        # Lampione parete
+        out.append('<circle cx="33" cy="83" r="3" fill="#4a3020"/>')
+        out.append('<rect x="30" y="83" width="7" height="3" fill="#ffd088"/>')
+        # Vasi fiori destra
+        out.append('<rect x="130" y="180" width="8" height="10" fill="#8a5030"/>')
+        out.append('<circle cx="134" cy="175" r="5" fill="#3a8028"/>')
+        out.append('<rect x="142" y="183" width="6" height="7" fill="#8a5030"/>')
+        out.append('<circle cx="145" cy="180" r="4" fill="#d02020"/>')
+        # Vasi fiori sinistra
+        out.append('<rect x="53" y="180" width="8" height="10" fill="#8a5030"/>')
+        out.append('<circle cx="57" cy="175" r="5" fill="#d04040"/>')
+        # Lampione pendente
+        out.append('<line x1="100" y1="70" x2="100" y2="80" stroke="#2a1a10" stroke-width="0.7"/>')
+        out.append('<circle cx="100" cy="83" r="2" fill="#ffd088" opacity="0.9"/>')
+
+    elif bg_id == "muro_occhi":
+        # Muro di pietra
+        out.append('<defs><pattern id="stone-wall" x="0" y="0" width="25" height="13" patternUnits="userSpaceOnUse">')
+        out.append('<rect width="25" height="13" fill="#8a7a6a"/>')
+        out.append('<rect x="0" y="0" width="10" height="6" fill="#9a8a7a" stroke="#6a5a4a" stroke-width="0.4"/>')
+        out.append('<rect x="12" y="0" width="13" height="6" fill="#a89888" stroke="#6a5a4a" stroke-width="0.4"/>')
+        out.append('<rect x="0" y="7" width="15" height="6" fill="#948474" stroke="#6a5a4a" stroke-width="0.4"/>')
+        out.append('<rect x="17" y="7" width="8" height="6" fill="#a49484" stroke="#6a5a4a" stroke-width="0.4"/>')
+        out.append('</pattern></defs>')
+        out.append('<rect width="200" height="200" fill="url(#stone-wall)"/>')
+        # Occhi disposti irregolarmente (coordinate scalate x 1.67)
+        eye_positions = [
+            (25, 25, -3, "#4a7a3a"), (70, 22, 2, "#6b5d3a"), (120, 27, -2, "#3a6ba5"), (167, 23, 3, "#8a5a3a"),
+            (47, 53, 1, "#4a7a3a"), (93, 50, -3, "#3a6ba5"), (145, 57, 2, "#5a3a6a"),
+            (30, 92, 2, "#6b5d3a"), (158, 97, -2, "#4a7a3a"),
+            (30, 133, -2, "#3a6ba5"), (75, 142, 3, "#8a5a3a"), (125, 137, -1, "#5a3a6a"), (172, 143, 2, "#4a7a3a"),
+            (50, 175, 1, "#6b5d3a"), (103, 178, -3, "#3a6ba5"), (153, 180, 2, "#8a5a3a"),
+        ]
+        for ex, ey, rot, iris_col in eye_positions:
+            out.append('<g transform="translate(' + str(ex) + ',' + str(ey) + ') rotate(' + str(rot) + ')">')
+            out.append('<rect x="-17" y="-8" width="33" height="17" fill="#e8d4b0" stroke="#6a5a3a" stroke-width="0.5"/>')
+            out.append('<ellipse cx="0" cy="0" rx="8" ry="4" fill="white"/>')
+            out.append('<circle cx="0" cy="0" r="3.3" fill="' + iris_col + '"/>')
+            out.append('<circle cx="0" cy="0" r="1.3" fill="#1a1a1a"/>')
+            out.append('<path d="M -8 -4 Q 0 -6 8 -4" fill="none" stroke="#3a2a1a" stroke-width="0.6"/>')
+            out.append('</g>')
+        # Finestra centrale nera con inferriata
+        out.append('<rect x="80" y="80" width="40" height="40" fill="#1a1a1a" stroke="#3a2a1a" stroke-width="1.5"/>')
+        out.append('<line x1="90" y1="80" x2="90" y2="120" stroke="#4a4a4a" stroke-width="1.5"/>')
+        out.append('<line x1="100" y1="80" x2="100" y2="120" stroke="#4a4a4a" stroke-width="1.5"/>')
+        out.append('<line x1="110" y1="80" x2="110" y2="120" stroke="#4a4a4a" stroke-width="1.5"/>')
+        out.append('<line x1="80" y1="100" x2="120" y2="100" stroke="#4a4a4a" stroke-width="1.2"/>')
+        out.append('<circle cx="100" cy="117" r="3" fill="#5a7a30"/>')
+
+    elif bg_id == "macca":
+        # Cielo tramonto
+        out.append('<defs><linearGradient id="sky-macca" x1="0" x2="0" y1="0" y2="1">')
+        out.append('<stop offset="0%" stop-color="#3a4a7a"/>')
+        out.append('<stop offset="30%" stop-color="#7a5a7a"/>')
+        out.append('<stop offset="65%" stop-color="#d88a7a"/>')
+        out.append('<stop offset="90%" stop-color="#e8b080"/>')
+        out.append('<stop offset="100%" stop-color="#f0c898"/></linearGradient>')
+        out.append('<linearGradient id="valley-macca" x1="0" x2="0" y1="0" y2="1">')
+        out.append('<stop offset="0%" stop-color="#2a3a30"/><stop offset="100%" stop-color="#0a1818"/></linearGradient></defs>')
+        out.append('<rect width="200" height="120" fill="url(#sky-macca)"/>')
+        out.append('<rect y="120" width="200" height="80" fill="url(#valley-macca)"/>')
+        out.append('<path d="M 0 130 Q 50 123 100 127 T 200 125 L 200 142 L 0 142 Z" fill="#1a2a28" opacity="0.9"/>')
+        # Borgo di 5 case attaccate al museo
+        # Casa 1 con campanile
+        out.append('<rect x="0" y="50" width="23" height="75" fill="#d88060"/>')
+        out.append('<rect x="5" y="33" width="8" height="20" fill="#c07048"/>')
+        out.append('<polygon points="5,33 13,33 9,23" fill="#a05838"/>')
+        out.append('<rect x="7" y="40" width="3" height="5" fill="#1a1a1a"/>')
+        # Casa 2
+        out.append('<rect x="23" y="58" width="20" height="67" fill="#c87058"/>')
+        out.append('<rect x="28" y="70" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="35" y="70" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="28" y="87" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="35" y="87" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="28" y="103" width="5" height="7" fill="#ffd088"/>')
+        # Casa 3 (ocra)
+        out.append('<rect x="43" y="53" width="23" height="72" fill="#d49860"/>')
+        out.append('<rect x="48" y="67" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="57" y="67" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="48" y="83" width="5" height="7" fill="#ffd088"/>')
+        out.append('<rect x="57" y="83" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="48" y="100" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="57" y="100" width="5" height="7" fill="#ffd088"/>')
+        out.append('<polygon points="43,53 66,53 55,45" fill="#8a4a30"/>')
+        # Casa 4
+        out.append('<rect x="66" y="60" width="20" height="65" fill="#b86848"/>')
+        out.append('<rect x="72" y="70" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="78" y="70" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="72" y="87" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="78" y="87" width="5" height="7" fill="#ffd088"/>')
+        # Casa 5
+        out.append('<rect x="86" y="55" width="23" height="70" fill="#c88870"/>')
+        out.append('<rect x="91" y="67" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="100" y="67" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="91" y="87" width="5" height="7" fill="#ffd088"/>')
+        out.append('<rect x="100" y="87" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="91" y="103" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<rect x="100" y="103" width="5" height="7" fill="#2a1a18"/>')
+        out.append('<polygon points="86,55 110,55 98,47" fill="#7a4028"/>')
+        # Edificio museo MACCA
+        out.append('<rect x="110" y="63" width="53" height="62" fill="#e8dac0"/>')
+        out.append('<rect x="107" y="60" width="60" height="5" fill="#d8c8a8"/>')
+        out.append('<g fill="#3a2a20" opacity="0.85">')
+        out.append('<rect x="113" y="70" width="5" height="50"/>')
+        out.append('<rect x="120" y="70" width="5" height="50"/>')
+        out.append('<rect x="127" y="70" width="5" height="50"/>')
+        out.append('<rect x="134" y="70" width="5" height="50"/>')
+        out.append('<rect x="141" y="70" width="5" height="50"/>')
+        out.append('<rect x="148" y="70" width="5" height="50"/>')
+        out.append('<rect x="155" y="70" width="5" height="50"/>')
+        out.append('</g>')
+        out.append('<rect x="110" y="70" width="53" height="50" fill="#ffd088" opacity="0.35"/>')
+        # Terrazza grande a destra
+        out.append('<rect x="147" y="87" width="50" height="13" fill="#4a3a28"/>')
+        out.append('<rect x="147" y="97" width="50" height="5" fill="#2a1a10"/>')
+        out.append('<rect x="147" y="73" width="50" height="14" fill="none" stroke="#2a1a10" stroke-width="1"/>')
+        out.append('<g stroke="#2a1a10" stroke-width="0.8">')
+        out.append('<line x1="153" y1="73" x2="153" y2="87"/>')
+        out.append('<line x1="162" y1="73" x2="162" y2="87"/>')
+        out.append('<line x1="170" y1="73" x2="170" y2="87"/>')
+        out.append('<line x1="178" y1="73" x2="178" y2="87"/>')
+        out.append('<line x1="187" y1="73" x2="187" y2="87"/>')
+        out.append('</g>')
+        # Persone sulla terrazza
+        out.append('<g fill="#1a1a1a">')
+        out.append('<rect x="157" y="63" width="3" height="10"/><circle cx="158.5" cy="61" r="2"/>')
+        out.append('<rect x="166" y="63" width="3" height="10"/><circle cx="167.5" cy="61" r="2"/>')
+        out.append('<rect x="177" y="65" width="3" height="8"/><circle cx="178.5" cy="63" r="1.7"/>')
+        out.append('<rect x="182" y="65" width="3" height="8"/><circle cx="183.5" cy="63" r="1.7"/>')
+        out.append('<rect x="187" y="65" width="3" height="8"/><circle cx="188.5" cy="63" r="1.7"/>')
+        out.append('</g>')
+        # Luci terrazza
+        out.append('<circle cx="153" cy="83" r="2" fill="#ffd088" opacity="0.95"/>')
+        out.append('<circle cx="170" cy="83" r="2" fill="#ffd088" opacity="0.95"/>')
+        out.append('<circle cx="187" cy="83" r="2" fill="#ffd088" opacity="0.95"/>')
+        # Colonne sotto terrazza
+        out.append('<g fill="#2a1a10">')
+        out.append('<rect x="158" y="100" width="3" height="30"/>')
+        out.append('<rect x="175" y="100" width="3" height="33"/>')
+        out.append('<rect x="190" y="100" width="3" height="37"/>')
+        out.append('</g>')
+        # Alberi primo piano
+        out.append('<g fill="#0a1410" opacity="0.95">')
+        out.append('<circle cx="63" cy="170" r="12"/>')
+        out.append('<circle cx="80" cy="175" r="10"/>')
+        out.append('<circle cx="108" cy="178" r="8"/>')
+        out.append('<circle cx="133" cy="175" r="10"/>')
+        out.append('</g>')
+
+    elif bg_id == "peccioli_tower":
+        # Cielo B/N
+        out.append('<defs><linearGradient id="sky-bell" x1="0" x2="0" y1="0" y2="1">')
+        out.append('<stop offset="0%" stop-color="#c8c8c8"/><stop offset="50%" stop-color="#dcdcdc"/><stop offset="100%" stop-color="#f0f0f0"/></linearGradient>')
+        out.append('<linearGradient id="stone-tower" x1="0" x2="1" y1="0" y2="0">')
+        out.append('<stop offset="0%" stop-color="#8a8278"/><stop offset="50%" stop-color="#b0a89c"/><stop offset="100%" stop-color="#7a7268"/></linearGradient>')
+        out.append('<linearGradient id="roof-tower" x1="0" x2="1" y1="0" y2="0">')
+        out.append('<stop offset="0%" stop-color="#6a6258"/><stop offset="50%" stop-color="#8a8278"/><stop offset="100%" stop-color="#5a524a"/></linearGradient></defs>')
+        out.append('<rect width="200" height="200" fill="url(#sky-bell)"/>')
+        # Nuvole
+        out.append('<ellipse cx="33" cy="92" rx="27" ry="7" fill="#ffffff" opacity="0.85"/>')
+        out.append('<ellipse cx="47" cy="97" rx="17" ry="5" fill="#ffffff" opacity="0.7"/>')
+        out.append('<ellipse cx="17" cy="117" rx="17" ry="5" fill="#ffffff" opacity="0.55"/>')
+        # Base quadrata con blocchi
+        out.append('<rect x="125" y="142" width="37" height="58" fill="url(#stone-tower)"/>')
+        out.append('<g stroke="#5a524a" stroke-width="0.5" opacity="0.6">')
+        out.append('<line x1="125" y1="158" x2="162" y2="158"/>')
+        out.append('<line x1="125" y1="175" x2="162" y2="175"/>')
+        out.append('<line x1="125" y1="192" x2="162" y2="192"/>')
+        out.append('<line x1="137" y1="142" x2="137" y2="158"/>')
+        out.append('<line x1="148" y1="142" x2="148" y2="158"/>')
+        out.append('<line x1="132" y1="158" x2="132" y2="175"/>')
+        out.append('<line x1="142" y1="158" x2="142" y2="175"/>')
+        out.append('<line x1="155" y1="158" x2="155" y2="175"/>')
+        out.append('<line x1="130" y1="175" x2="130" y2="192"/>')
+        out.append('<line x1="147" y1="175" x2="147" y2="192"/>')
+        out.append('<line x1="158" y1="175" x2="158" y2="192"/>')
+        out.append('</g>')
+        # Monofora con vetrata verde
+        out.append('<path d="M 137 167 L 137 157 Q 137 152 143 152 Q 150 152 150 157 L 150 167 Z" fill="#1a1a1a"/>')
+        out.append('<rect x="139.5" y="157" width="8" height="10" fill="#2a7060" opacity="0.75"/>')
+        out.append('<line x1="143" y1="157" x2="143" y2="167" stroke="#3a2a20" stroke-width="0.7"/>')
+        # Cornice
+        out.append('<rect x="120" y="137" width="47" height="5" fill="#5a524a"/>')
+        out.append('<rect x="122" y="133" width="43" height="3" fill="#6a6258"/>')
+        # Primo ordine bifora
+        out.append('<rect x="125" y="100" width="37" height="33" fill="url(#stone-tower)"/>')
+        out.append('<path d="M 132 130 L 132 117 Q 132 110 137 110 L 137 130 Z" fill="#1a1a1a"/>')
+        out.append('<path d="M 150 130 L 150 117 Q 150 110 155 110 L 155 130 Z" fill="#1a1a1a"/>')
+        out.append('<rect x="142" y="110" width="3" height="20" fill="#5a524a"/>')
+        out.append('<path d="M 137 110 Q 143 107 150 110" fill="none" stroke="#5a524a" stroke-width="0.7"/>')
+        out.append('<rect x="140.8" y="108" width="5" height="2" fill="#6a6258"/>')
+        out.append('<rect x="133" y="120" width="3" height="10" fill="#2a7060" opacity="0.75"/>')
+        out.append('<rect x="150" y="120" width="3" height="10" fill="#2a7060" opacity="0.75"/>')
+        # Cornice
+        out.append('<rect x="120" y="97" width="47" height="3" fill="#5a524a"/>')
+        out.append('<rect x="122" y="93" width="43" height="3" fill="#6a6258"/>')
+        # Secondo ordine bifora
+        out.append('<rect x="128" y="67" width="30" height="27" fill="url(#stone-tower)"/>')
+        out.append('<path d="M 133 90 L 133 77 Q 133 72 138 72 L 138 90 Z" fill="#1a1a1a"/>')
+        out.append('<path d="M 148 90 L 148 77 Q 148 72 153 72 L 153 90 Z" fill="#1a1a1a"/>')
+        out.append('<rect x="142" y="72" width="2" height="18" fill="#5a524a"/>')
+        out.append('<path d="M 138 72 Q 143 69 148 72" fill="none" stroke="#5a524a" stroke-width="0.5"/>')
+        # Cornice prima del tamburo
+        out.append('<rect x="123" y="63" width="40" height="3" fill="#5a524a"/>')
+        out.append('<rect x="125" y="60" width="36" height="3" fill="#6a6258"/>')
+        out.append('<rect x="127" y="57" width="32" height="3" fill="#7a7268"/>')
+        # Tamburo ottagonale
+        out.append('<polygon points="130,57 157,57 155,45 132,45" fill="url(#stone-tower)"/>')
+        out.append('<g fill="#3a3028" opacity="0.8">')
+        out.append('<path d="M 133 53 L 133 49 Q 133 48 136 48 Q 139 48 139 49 L 139 53 Z"/>')
+        out.append('<path d="M 140 53 L 140 49 Q 140 48 143 48 Q 146 48 146 49 L 146 53 Z"/>')
+        out.append('<path d="M 147 53 L 147 49 Q 147 48 150 48 Q 153 48 153 49 L 153 53 Z"/>')
+        out.append('</g>')
+        out.append('<rect x="130" y="41" width="3" height="4" fill="#6a6258"/>')
+        out.append('<rect x="137" y="41" width="3" height="4" fill="#6a6258"/>')
+        out.append('<rect x="144" y="41" width="3" height="4" fill="#6a6258"/>')
+        out.append('<rect x="151" y="41" width="3" height="4" fill="#6a6258"/>')
+        # Tetto a pagoda
+        out.append('<polygon points="130,41 157,41 143,8" fill="url(#roof-tower)"/>')
+        out.append('<line x1="143" y1="8" x2="143" y2="41" stroke="#3a3028" stroke-width="0.8" opacity="0.6"/>')
+        out.append('<line x1="137" y1="25" x2="133" y2="41" stroke="#3a3028" stroke-width="0.5" opacity="0.5"/>')
+        out.append('<line x1="150" y1="25" x2="154" y2="41" stroke="#3a3028" stroke-width="0.5" opacity="0.5"/>')
+        out.append('<g stroke="#3a3028" stroke-width="0.4" opacity="0.5">')
+        out.append('<line x1="135" y1="33" x2="152" y2="33"/>')
+        out.append('<line x1="137" y1="28" x2="150" y2="28"/>')
+        out.append('<line x1="139" y1="22" x2="147" y2="22"/>')
+        out.append('<line x1="140" y1="17" x2="146" y2="17"/>')
+        out.append('</g>')
+        # Pennacchio + banderuola
+        out.append('<rect x="142" y="3" width="2" height="7" fill="#3a3028"/>')
+        out.append('<circle cx="143" cy="5" r="1.7" fill="#5a524a"/>')
+        out.append('<polygon points="143,2 148,3 143,5" fill="#3a3028"/>')
+        # Rondini
+        out.append('<g fill="#1a1a1a">')
+        out.append('<path d="M 30 63 L 38 56 L 47 63 L 42 61 L 38 62 L 35 61 Z"/>')
+        out.append('<path d="M 50 53 L 55 50 L 60 53 L 55 52 Z"/>')
+        out.append('<path d="M 67 45 L 72 42 L 77 45 L 72 44 Z"/>')
+        out.append('<path d="M 83 38 L 87 36 L 92 38 L 87 37 Z"/>')
+        out.append('<path d="M 20 80 L 27 75 L 33 80 L 27 78 Z"/>')
+        out.append('<path d="M 40 70 L 45 67 L 50 70 L 45 69 Z"/>')
+        out.append('<path d="M 60 63 L 65 60 L 70 63 L 65 62 Z"/>')
+        out.append('<path d="M 8 97 L 15 92 L 22 97 L 15 95 Z"/>')
+        out.append('<path d="M 33 93 L 40 89 L 47 93 L 40 91 Z"/>')
+        out.append('</g>')
+
+    elif bg_id == "french_quarter":
+        # Cielo
+        out.append('<defs><linearGradient id="sky-fq" x1="0" x2="0" y1="0" y2="1">')
+        out.append('<stop offset="0%" stop-color="#87CEEB"/><stop offset="100%" stop-color="#b5d8e8"/></linearGradient>')
+        out.append('<pattern id="ironwork" x="0" y="0" width="13" height="13" patternUnits="userSpaceOnUse">')
+        out.append('<circle cx="6.5" cy="6.5" r="2.5" fill="none" stroke="#1a1a1a" stroke-width="0.8"/>')
+        out.append('<line x1="0" y1="6.5" x2="13" y2="6.5" stroke="#1a1a1a" stroke-width="0.5"/>')
+        out.append('<line x1="6.5" y1="0" x2="6.5" y2="13" stroke="#1a1a1a" stroke-width="0.5"/>')
+        out.append('</pattern></defs>')
+        out.append('<rect width="200" height="33" fill="url(#sky-fq)"/>')
+        # Edificio rosso mattone
+        out.append('<rect x="0" y="30" width="200" height="170" fill="#a85a3a"/>')
+        # 1° piano finestre
+        out.append('<g fill="#3a2418">')
+        out.append('<rect x="13" y="47" width="23" height="40"/>')
+        out.append('<rect x="50" y="47" width="23" height="40"/>')
+        out.append('<rect x="87" y="47" width="23" height="40"/>')
+        out.append('<rect x="123" y="47" width="23" height="40"/>')
+        out.append('<rect x="160" y="47" width="23" height="40"/>')
+        out.append('</g>')
+        # Balcone 1° piano
+        out.append('<rect x="0" y="90" width="200" height="13" fill="url(#ironwork)" opacity="0.8"/>')
+        out.append('<rect x="0" y="88" width="200" height="2" fill="#1a1a1a"/>')
+        out.append('<rect x="0" y="103" width="200" height="2" fill="#1a1a1a"/>')
+        # 2° piano finestre
+        out.append('<g fill="#3a2418">')
+        out.append('<rect x="13" y="113" width="23" height="40"/>')
+        out.append('<rect x="50" y="113" width="23" height="40"/>')
+        out.append('<rect x="87" y="113" width="23" height="40"/>')
+        out.append('<rect x="123" y="113" width="23" height="40"/>')
+        out.append('<rect x="160" y="113" width="23" height="40"/>')
+        out.append('</g>')
+        # Balcone 2° piano
+        out.append('<rect x="0" y="157" width="200" height="13" fill="url(#ironwork)" opacity="0.8"/>')
+        out.append('<rect x="0" y="155" width="200" height="2" fill="#1a1a1a"/>')
+        out.append('<rect x="0" y="170" width="200" height="2" fill="#1a1a1a"/>')
+        # Piante appese
+        out.append('<g fill="#4a7a2a">')
+        out.append('<circle cx="23" cy="100" r="6"/>')
+        out.append('<circle cx="62" cy="100" r="6"/>')
+        out.append('<circle cx="98" cy="100" r="6"/>')
+        out.append('<circle cx="135" cy="100" r="6"/>')
+        out.append('<circle cx="172" cy="100" r="6"/>')
+        out.append('<circle cx="23" cy="167" r="6"/>')
+        out.append('<circle cx="62" cy="167" r="6"/>')
+        out.append('<circle cx="98" cy="167" r="6"/>')
+        out.append('<circle cx="135" cy="167" r="6"/>')
+        out.append('<circle cx="172" cy="167" r="6"/>')
+        out.append('</g>')
+        # Marciapiede
+        out.append('<rect x="0" y="177" width="200" height="23" fill="#9a9a9a"/>')
 
     elif bg_id == "sunset_mississippi":
-        out.append('<rect y="0" width="200" height="80" fill="#ff7e4a"/>')
-        out.append('<rect y="80" width="200" height="30" fill="#ffa07a"/>')
-        out.append('<circle cx="100" cy="110" r="22" fill="' + BRAND_YELLOW + '" opacity="0.95"/>')
-        out.append('<rect y="110" width="200" height="90" fill="#8b4513"/>')
-        out.append('<rect y="115" width="200" height="3" fill="' + BRAND_YELLOW + '" opacity="0.4"/>')
-        out.append('<rect y="130" width="200" height="2" fill="' + BRAND_YELLOW + '" opacity="0.3"/>')
-        out.append('<rect y="145" width="200" height="2" fill="' + BRAND_YELLOW + '" opacity="0.2"/>')
-        out.append('<g fill="#2a1a0a">')
-        out.append('<rect x="35" y="100" width="25" height="6"/>')
-        out.append('<rect x="40" y="95" width="15" height="5"/>')
-        out.append('<rect x="44" y="88" width="2" height="8"/>')
-        out.append('<rect x="49" y="88" width="2" height="8"/>')
+        # Cielo tramonto
+        out.append('<defs><linearGradient id="sunset-nola" x1="0" x2="0" y1="0" y2="1">')
+        out.append('<stop offset="0%" stop-color="#ff9a8b"/>')
+        out.append('<stop offset="40%" stop-color="#ffb199"/>')
+        out.append('<stop offset="70%" stop-color="#ffc9a9"/>')
+        out.append('<stop offset="100%" stop-color="#d4a8c5"/></linearGradient>')
+        out.append('<linearGradient id="river-nola" x1="0" x2="0" y1="0" y2="1">')
+        out.append('<stop offset="0%" stop-color="#7a92a8"/><stop offset="100%" stop-color="#5a7088"/></linearGradient></defs>')
+        out.append('<rect width="200" height="100" fill="url(#sunset-nola)"/>')
+        # Nuvole rosate
+        out.append('<ellipse cx="42" cy="30" rx="20" ry="5" fill="#ffd4c4" opacity="0.7"/>')
+        out.append('<ellipse cx="133" cy="20" rx="25" ry="4" fill="#ffd4c4" opacity="0.7"/>')
+        out.append('<ellipse cx="167" cy="42" rx="17" ry="4" fill="#f5b8a8" opacity="0.6"/>')
+        # Skyline
+        out.append('<g fill="#4a5a6a">')
+        out.append('<rect x="17" y="70" width="13" height="33"/>')
+        out.append('<rect x="33" y="58" width="17" height="45"/>')
+        out.append('<rect x="53" y="50" width="13" height="53"/>')
+        out.append('<rect x="70" y="63" width="10" height="40"/>')
+        out.append('<rect x="83" y="42" width="17" height="61"/>')
+        out.append('<rect x="103" y="53" width="12" height="50"/>')
+        out.append('<rect x="117" y="47" width="15" height="56"/>')
+        out.append('<rect x="135" y="60" width="12" height="43"/>')
+        out.append('<rect x="150" y="67" width="13" height="36"/>')
+        out.append('<rect x="167" y="55" width="12" height="48"/>')
         out.append('</g>')
+        # Luci
+        out.append('<g fill="#ffdc70">')
+        out.append('<rect x="20" y="80" width="2" height="2"/>')
+        out.append('<rect x="37" y="70" width="2" height="2"/>')
+        out.append('<rect x="57" y="63" width="2" height="2"/>')
+        out.append('<rect x="87" y="53" width="2" height="2"/>')
+        out.append('<rect x="93" y="63" width="2" height="2"/>')
+        out.append('<rect x="120" y="58" width="2" height="2"/>')
+        out.append('<rect x="127" y="70" width="2" height="2"/>')
+        out.append('<rect x="153" y="73" width="2" height="2"/>')
+        out.append('</g>')
+        # Lungofiume + fiume
+        out.append('<rect y="103" width="200" height="8" fill="#3a4a5a"/>')
+        out.append('<rect y="111" width="200" height="58" fill="url(#river-nola)"/>')
+        # Battello
+        out.append('<rect x="117" y="125" width="37" height="13" fill="white"/>')
+        out.append('<rect x="120" y="120" width="30" height="5" fill="white"/>')
+        out.append('<rect x="130" y="113" width="3" height="7" fill="#a84030"/>')
+        out.append('<rect x="140" y="113" width="3" height="7" fill="#a84030"/>')
+        out.append('<rect x="117" y="138" width="37" height="3" fill="#a84030"/>')
+        # Riflessi
+        out.append('<g fill="#3a4a5a" opacity="0.35">')
+        out.append('<rect x="33" y="111" width="17" height="20"/>')
+        out.append('<rect x="53" y="111" width="13" height="23"/>')
+        out.append('<rect x="83" y="111" width="17" height="27"/>')
+        out.append('<rect x="117" y="111" width="15" height="23"/>')
+        out.append('</g>')
+        # Prato primo piano
+        out.append('<rect y="169" width="200" height="31" fill="#5a6a50"/>')
 
     elif bg_id == "mardigras":
-        out.append('<rect width="200" height="200" fill="#4a1a5a"/>')
-        confetti = [
-            (25, 30, "#2ea36a"), (60, 50, "#FFDE59"), (140, 25, "#7a3fb8"),
-            (170, 60, "#2ea36a"), (30, 90, "#FFDE59"), (90, 110, "#7a3fb8"),
-            (160, 100, "#FFDE59"), (40, 140, "#2ea36a"), (110, 160, "#FFDE59"),
-            (170, 155, "#2ea36a"), (50, 175, "#7a3fb8"), (135, 180, "#FFDE59"),
-        ]
-        for cx, cy, col in confetti:
-            out.append('<polygon points="' + str(cx) + ',' + str(cy-3) + ' ' + str(cx+3) + ',' + str(cy) + ' ' + str(cx) + ',' + str(cy+3) + ' ' + str(cx-3) + ',' + str(cy) + '" fill="' + col + '" opacity="0.75"/>')
-        out.append('<path d="M -10 70 Q 100 55 210 70" fill="none" stroke="#FFDE59" stroke-width="1" opacity="0.5" stroke-dasharray="2,3"/>')
-        out.append('<path d="M -10 130 Q 100 115 210 130" fill="none" stroke="#2ea36a" stroke-width="1" opacity="0.5" stroke-dasharray="2,3"/>')
+        # Cielo
+        out.append('<defs><linearGradient id="sky-mardi" x1="0" x2="0" y1="0" y2="1">')
+        out.append('<stop offset="0%" stop-color="#4ba5c5"/><stop offset="100%" stop-color="#a8d5e8"/></linearGradient></defs>')
+        out.append('<rect width="200" height="92" fill="url(#sky-mardi)"/>')
+        # Carro bianco
+        out.append('<rect x="17" y="125" width="167" height="42" fill="#f0f0f0"/>')
+        # Decorazioni carro
+        out.append('<path d="M 17 125 L 25 133 L 33 125 L 42 133 L 50 125 L 58 133 L 67 125 L 75 133 L 83 125 L 92 133 L 100 125 L 108 133 L 117 125 L 125 133 L 133 125 L 142 133 L 150 125 L 158 133 L 167 125 L 175 133 L 183 125 L 183 130 L 17 130 Z" fill="#d4a017"/>')
+        # Piume rosa sinistra
+        out.append('<path d="M 37 125 Q 25 92 20 63 Q 17 42 25 30 Q 33 42 37 63 Q 40 92 42 125 Z" fill="#ff4d8a" opacity="0.85"/>')
+        out.append('<path d="M 50 125 Q 42 87 37 53 Q 33 33 43 25 Q 53 37 53 58 Q 53 92 55 125 Z" fill="#ff6ba0" opacity="0.85"/>')
+        out.append('<path d="M 63 125 Q 58 92 58 63 Q 60 42 70 37 Q 73 50 70 67 Q 68 92 67 125 Z" fill="#ff85b0" opacity="0.8"/>')
+        # Figura regale centrale (re)
+        out.append('<path d="M 92 125 L 92 100 L 83 92 L 100 80 L 117 92 L 108 100 L 108 125 Z" fill="#a84030"/>')
+        out.append('<circle cx="100" cy="80" r="8" fill="#e8b79a"/>')
+        out.append('<polygon points="92,73 100,63 108,73 105,80 95,80" fill="#d4a017"/>')
+        # Piume bianche destra
+        out.append('<path d="M 133 125 Q 125 92 120 58 Q 117 33 127 25 Q 137 37 137 63 Q 137 92 138 125 Z" fill="#ffffff" opacity="0.9"/>')
+        out.append('<path d="M 150 125 Q 142 92 140 63 Q 140 37 150 30 Q 158 42 157 67 Q 153 92 153 125 Z" fill="#ffffff" opacity="0.85"/>')
+        out.append('<path d="M 167 125 Q 160 92 160 63 Q 162 42 170 37 Q 175 50 172 70 Q 168 97 167 125 Z" fill="#e8e8f0" opacity="0.85"/>')
+        # Figura regale bianca (regina)
+        out.append('<path d="M 142 125 L 142 103 L 133 97 L 147 87 L 160 97 L 152 103 L 152 125 Z" fill="#e8e0f0"/>')
+        out.append('<circle cx="147" cy="87" r="7" fill="#e8b79a"/>')
+        out.append('<polygon points="140,82 147,73 153,82 152,87 142,87" fill="#d4a017"/>')
+        # Coriandoli
+        out.append('<g>')
+        out.append('<rect x="25" y="42" width="3" height="5" fill="#ffde59" transform="rotate(20 27 44)"/>')
+        out.append('<rect x="67" y="30" width="3" height="5" fill="#7a3d9a" transform="rotate(-15 68 32)"/>')
+        out.append('<rect x="108" y="47" width="3" height="5" fill="#3d9a45" transform="rotate(30 110 49)"/>')
+        out.append('<rect x="158" y="33" width="3" height="5" fill="#ffde59" transform="rotate(45 160 35)"/>')
+        out.append('<rect x="83" y="17" width="3" height="5" fill="#7a3d9a" transform="rotate(-25 85 19)"/>')
+        out.append('<rect x="42" y="67" width="3" height="5" fill="#3d9a45" transform="rotate(60 44 69)"/>')
+        out.append('<rect x="133" y="70" width="3" height="5" fill="#ffde59" transform="rotate(-40 135 72)"/>')
+        out.append('</g>')
+        # Strada
+        out.append('<rect y="167" width="200" height="33" fill="#888"/>')
 
     return "".join(out)
 
@@ -651,6 +1027,11 @@ if avatar.get("symbol") == "torre_peccioli":
     avatar["symbol"] = "campanile_peccioli"
 if avatar.get("symbol") in ("collina", "moon"):
     avatar["symbol"] = "trumpet"
+# Migrazioni legacy: rimappa sfondi rimossi
+if avatar.get("bg") == "stars":
+    avatar["bg"] = "nola_jazz"
+if avatar.get("bg") == "nola_skyline":
+    avatar["bg"] = "sunset_mississippi"
 
 display_name = user["display_name"]
 
