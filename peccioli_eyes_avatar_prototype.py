@@ -61,6 +61,8 @@ SYMBOLS = [
     {"id": "campanile_peccioli", "label": "Campanile di Peccioli", "category": "peccioli"},
     {"id": "cipresso", "label": "Cipresso toscano", "category": "peccioli"},
     {"id": "uliva", "label": "Olivo", "category": "peccioli"},
+    {"id": "gigante", "label": "Gigante di Peccioli", "category": "peccioli"},
+    {"id": "mammut", "label": "Mammut", "category": "peccioli"},
 
     {"id": "trumpet", "label": "Tromba jazz", "category": "nola"},
     {"id": "mask", "label": "Maschera Mardi Gras", "category": "nola"},
@@ -186,6 +188,64 @@ def render_symbol(sym_id, color):
         parts.append('<circle cx="2.2" cy="-7" r="1.5" fill="' + color + '"/>')
         parts.append('<circle cx="-2" cy="-2" r="1.3" fill="' + color + '"/>')
         parts.append('<circle cx="2" cy="7" r="1.4" fill="' + color + '"/>')
+        parts.append('</g>')
+        return "".join(parts)
+
+    if sym_id == "gigante":
+        # Gigante di Peccioli: figura umana accovacciata che emerge dalla terra, con braccia staccate dal torso
+        parts = []
+        parts.append('<g transform="translate(100 100)">')
+        # TESTA calva ovale
+        parts.append('<ellipse cx="0" cy="-9.5" rx="2.2" ry="2.4" fill="' + color + '"/>')
+        # COLLO
+        parts.append('<rect x="-0.75" y="-7.5" width="1.5" height="1.3" fill="' + color + '"/>')
+        # SPALLE (deltoidi)
+        parts.append('<ellipse cx="-3.4" cy="-5.6" rx="1.7" ry="1.5" fill="' + color + '"/>')
+        parts.append('<ellipse cx="3.4" cy="-5.6" rx="1.7" ry="1.5" fill="' + color + '"/>')
+        # TORSO centrale (stretto, ben staccato dalle braccia)
+        parts.append('<path d="M -2.9 -5 Q -3.9 -1.2 -3.9 2 Q -3.9 5.4 -2.4 7.8 L 2.4 7.8 Q 3.9 5.4 3.9 2 Q 3.9 -1.2 2.9 -5 L 1.9 -5.7 L -1.9 -5.7 Z" fill="' + color + '"/>')
+        # BRACCIO SINISTRO che arriva a terra (ben distante dal torso)
+        parts.append('<path d="M -4.8 -4.5 Q -7.2 -1 -8.6 2.9 Q -9.6 5.7 -10.1 7.8 L -6.7 7.8 Q -6.2 5.7 -5.7 3.4 Q -5.2 1 -4.8 -1.4 Q -4.5 -3.1 -4.5 -4.1 Z" fill="' + color + '"/>')
+        # Mano sinistra a terra
+        parts.append('<ellipse cx="-8.9" cy="7.8" rx="1.2" ry="0.6" fill="' + color + '"/>')
+        # BRACCIO DESTRO che arriva a terra
+        parts.append('<path d="M 4.8 -4.5 Q 7.2 -1 8.6 2.9 Q 9.6 5.7 10.1 7.8 L 6.7 7.8 Q 6.2 5.7 5.7 3.4 Q 5.2 1 4.8 -1.4 Q 4.5 -3.1 4.5 -4.1 Z" fill="' + color + '"/>')
+        # Mano destra a terra
+        parts.append('<ellipse cx="8.9" cy="7.8" rx="1.2" ry="0.6" fill="' + color + '"/>')
+        # Terra
+        parts.append('<path d="M -12 8 Q -8 7.5 -4 8 Q 0 8.5 4 8 Q 8 7.5 12 8 L 12 9.5 L -12 9.5 Z" fill="' + color + '"/>')
+        # Pettorali (opacità ridotta)
+        parts.append('<ellipse cx="-1.5" cy="-3.5" rx="1.1" ry="1.5" fill="' + color + '" opacity="0.32"/>')
+        parts.append('<ellipse cx="1.5" cy="-3.5" rx="1.1" ry="1.5" fill="' + color + '" opacity="0.32"/>')
+        # Linea mediana addominali
+        parts.append('<line x1="0" y1="-4.5" x2="0" y2="5.5" stroke="' + color + '" stroke-width="0.22" opacity="0.4"/>')
+        parts.append('<line x1="-1" y1="-0.8" x2="1" y2="-0.8" stroke="' + color + '" stroke-width="0.22" opacity="0.4"/>')
+        parts.append('<line x1="-1" y1="0.9" x2="1" y2="0.9" stroke="' + color + '" stroke-width="0.22" opacity="0.4"/>')
+        parts.append('<line x1="-1" y1="2.9" x2="1" y2="2.9" stroke="' + color + '" stroke-width="0.22" opacity="0.4"/>')
+        parts.append('</g>')
+        return "".join(parts)
+
+    if sym_id == "mammut":
+        # Mammut di Peccioli: elefante preistorico con zanne e proboscide
+        parts = []
+        parts.append('<g transform="translate(100 100)">')
+        # Corpo massiccio accovacciato
+        parts.append('<ellipse cx="-1.2" cy="3.6" rx="6.7" ry="4.3" fill="' + color + '"/>')
+        # Gambe anteriore e posteriore
+        parts.append('<rect x="-6.7" y="4.8" width="2.6" height="4.3" rx="0.5" fill="' + color + '"/>')
+        parts.append('<rect x="3.1" y="4.8" width="2.6" height="4.3" rx="0.5" fill="' + color + '"/>')
+        # Testa grande
+        parts.append('<ellipse cx="2.9" cy="-1.9" rx="3.6" ry="3.4" fill="' + color + '"/>')
+        # Orecchio floscio
+        parts.append('<ellipse cx="0.5" cy="-1.2" rx="1.7" ry="1.9" transform="rotate(-15 0.5 -1.2)" fill="' + color + '"/>')
+        # Proboscide alzata e curva
+        parts.append('<path d="M 5.3 -2.9 Q 6.7 -4.8 7.2 -6.7 Q 7.7 -8.6 6.2 -9.1 Q 5.3 -8.6 5.5 -7.2 Q 5.5 -5.3 4.8 -3.6 Z" fill="' + color + '"/>')
+        # Zanna anteriore grande curva
+        parts.append('<path d="M 6 -1 Q 9.1 -2 10.1 -5.3 Q 10.3 -6.7 9.6 -6.7 Q 8.6 -5.3 8.1 -3.4 Q 7.2 -2 6 -1 Z" fill="' + color + '"/>')
+        # Seconda zanna dietro
+        parts.append('<path d="M 4.3 -0.05 Q 6.7 -0.5 7.2 -2.4 Q 7.2 -3.4 6.7 -3.4 Q 5.8 -2.4 4.3 -0.05 Z" fill="' + color + '"/>')
+        # Coda
+        parts.append('<path d="M -7.7 2.4 Q -9.6 3.1 -10.1 5.5" fill="none" stroke="' + color + '" stroke-width="0.7" stroke-linecap="round"/>')
         parts.append('</g>')
         return "".join(parts)
 
