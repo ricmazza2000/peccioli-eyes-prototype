@@ -967,6 +967,20 @@ def eye_svg(avatar_dict, size=240):
     return build_eye_svg(tup, size)
 
 
+def render_swatch_row(state_key, current_value, key_prefix):
+    """Renderizza una griglia di 12 swatch colorati cliccabili come bottoni.
+    Usa st.button + CSS data-attribute per colorare via stylesheet."""
+    cols = st.columns(6)
+    for i, (cname, chex) in enumerate(COLORS):
+        with cols[i % 6]:
+            is_active = (current_value.lower() == chex.lower())
+            label = "●" if is_active else "○"
+            btn_type = "primary" if is_active else "secondary"
+            if st.button(f"{label}\n{cname[:3]}", key=f"sw_{key_prefix}_{i}", use_container_width=True, help=cname, type=btn_type):
+                st.session_state["w_" + state_key] = chex
+                st.rerun()
+
+
 # ==================== CSS ====================
 css_lines = []
 css_lines.append('<link rel="preconnect" href="https://fonts.googleapis.com">')
@@ -1162,6 +1176,9 @@ elif st.session_state.view == "editor":
         current_sym_obj = next((s for s in SYMBOLS if s["id"] == st.session_state.w_symbol), SYMBOLS[0])
         st.session_state.w_symbol_cat = current_sym_obj["category"]
 
+    if "editor_tab" not in st.session_state:
+        st.session_state.editor_tab = "forma"
+
     live_avatar = {
         "shape": st.session_state.w_shape,
         "iris": st.session_state.w_iris,
@@ -1173,125 +1190,112 @@ elif st.session_state.view == "editor":
         "border_color": st.session_state.w_border_color,
     }
 
-    c_preview, c_controls = st.columns([1, 1.3])
+    # === CSS dell'editor ===
+    st.markdown(f"""
+    <style>
+    /* Tabs Navigation */
+    .ed-tabs-nav {{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4rem;
+        background: white;
+        padding: 0.4rem;
+        border-radius: 16px;
+        border: 1px solid rgba(19,0,137,0.08);
+        box-shadow: 0 2px 8px rgba(19,0,137,0.04);
+        margin-bottom: 1.2rem;
+    }}
+    /* Pannello editor */
+    .ed-panel {{
+        background: white;
+        border-radius: 18px;
+        padding: 1.4rem 1.3rem;
+        border: 1px solid rgba(19,0,137,0.08);
+        box-shadow: 0 2px 8px rgba(19,0,137,0.04);
+        margin-bottom: 1rem;
+    }}
+    .ed-panel-step {{
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: {BRAND_BLUE};
+        opacity: 0.55;
+        margin-bottom: 0.3rem;
+    }}
+    .ed-panel-title {{
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: {BRAND_BLUE};
+    }}
+    .ed-label {{
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: {BRAND_BLUE};
+        margin-bottom: 0.55rem;
+        display: block;
+    }}
 
+    /* Override st.button per i tab pills */
+    [data-testid="stHorizontalBlock"] [data-testid="column"] .stButton button {{
+        font-size: 0.78rem;
+        font-weight: 600;
+        border-radius: 12px;
+        padding: 0.7rem 0.3rem;
+        transition: all 0.15s;
+        border: 2px solid transparent;
+    }}
+    
+    /* Preview sticky */
+    .ed-preview-card {{
+        background: {BRAND_BLUE_LIGHT};
+        border-radius: 22px;
+        padding: 1.5rem 1rem 1.2rem;
+        text-align: center;
+        border: 1px solid rgba(19,0,137,0.08);
+        position: sticky;
+        top: 1rem;
+    }}
+    .ed-preview-label {{
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: {BRAND_BLUE};
+        opacity: 0.55;
+        margin-top: 0.8rem;
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+
+    # === LAYOUT 2 COLONNE ===
+    c_preview, c_controls = st.columns([1, 1.4])
+
+    # COLONNA SINISTRA: ANTEPRIMA + AZIONI
     with c_preview:
-        preview_svg = eye_svg(live_avatar, size=300)
-        preview_card = '<div style="background:' + BRAND_BLUE_LIGHT + ';border-radius:20px;padding:1.5rem;text-align:center;">' + preview_svg + '<div style="margin-top:0.8rem;font-size:0.85rem;color:' + BRAND_BLUE + ';font-weight:500;">Anteprima dal vivo</div></div>'
-        st.markdown(preview_card, unsafe_allow_html=True)
-
-        if st.button("Sguardo casuale", use_container_width=True, key="randomize"):
-            st.session_state.w_shape = random.choice(SHAPES)["id"]
-            st.session_state.w_iris = random.choice([c[1] for c in COLORS if c[1] != "#ffffff"])
-            rand_sym = random.choice(SYMBOLS)
-            st.session_state.w_symbol = rand_sym["id"]
-            st.session_state.w_symbol_cat = rand_sym["category"]
-            st.session_state.w_symbol_color = random.choice([c[1] for c in COLORS])
-            st.session_state.w_lashes = random.choice(LASHES)["id"]
-            st.session_state.w_lashes_color = random.choice([c[1] for c in COLORS])
-            st.session_state.w_bg = random.choice(BACKGROUNDS)["id"]
-            st.session_state.w_border_color = random.choice([c[1] for c in COLORS])
-            st.rerun()
-
-        st.caption("Clicca su **Salva** per rendere permanenti le scelte.")
-
-    with c_controls:
-        st.markdown("**Forma dell'occhio**")
-        shape_labels = [s["label"] for s in SHAPES]
-        shape_ids = [s["id"] for s in SHAPES]
-        current_shape_idx = shape_ids.index(st.session_state.w_shape) if st.session_state.w_shape in shape_ids else 0
-        new_shape_label = st.radio("Forma", shape_labels, index=current_shape_idx, horizontal=True, label_visibility="collapsed", key="__rd_shape")
-        _new_shape = shape_ids[shape_labels.index(new_shape_label)]
-        if _new_shape != st.session_state.w_shape:
-            st.session_state.w_shape = _new_shape
-            st.rerun()
-
-        st.markdown("**Colore bordo dell'occhio**")
-        color_labels = [c[0] for c in COLORS]
-        color_values = [c[1] for c in COLORS]
-        current_border_idx = color_values.index(st.session_state.w_border_color) if st.session_state.w_border_color in color_values else 11
-        new_border_label = st.selectbox("Bordo", color_labels, index=current_border_idx, label_visibility="collapsed", key="__sb_border")
-        _new_border = color_values[color_labels.index(new_border_label)]
-        if _new_border != st.session_state.w_border_color:
-            st.session_state.w_border_color = _new_border
-            st.rerun()
-
-        st.markdown("**Colore iride**")
-        current_iris_idx = color_values.index(st.session_state.w_iris) if st.session_state.w_iris in color_values else 0
-        new_iris_label = st.selectbox("Iride", color_labels, index=current_iris_idx, label_visibility="collapsed", key="__sb_iris")
-        _new_iris = color_values[color_labels.index(new_iris_label)]
-        if _new_iris != st.session_state.w_iris:
-            st.session_state.w_iris = _new_iris
-            st.rerun()
-
-        st.markdown("**Simbolo nella pupilla**")
-        cat_labels = [c[1] for c in SYMBOL_CATEGORIES]
-        cat_ids = [c[0] for c in SYMBOL_CATEGORIES]
-        current_cat_idx = cat_ids.index(st.session_state.w_symbol_cat) if st.session_state.w_symbol_cat in cat_ids else 0
-        selected_cat_label = st.radio("Categoria", cat_labels, index=current_cat_idx, horizontal=True, label_visibility="collapsed", key="__rd_cat")
-        _new_cat = cat_ids[cat_labels.index(selected_cat_label)]
-        if _new_cat != st.session_state.w_symbol_cat:
-            st.session_state.w_symbol_cat = _new_cat
-            cat_syms = [s for s in SYMBOLS if s["category"] == _new_cat]
-            if cat_syms:
-                st.session_state.w_symbol = cat_syms[0]["id"]
-            st.rerun()
-
-        cat_symbols = [s for s in SYMBOLS if s["category"] == st.session_state.w_symbol_cat]
-        sym_labels = [s["label"] for s in cat_symbols]
-        sym_ids = [s["id"] for s in cat_symbols]
-        if st.session_state.w_symbol not in sym_ids:
-            st.session_state.w_symbol = sym_ids[0]
-        current_sym_idx = sym_ids.index(st.session_state.w_symbol)
-        new_sym_label = st.radio("Simbolo", sym_labels, index=current_sym_idx, label_visibility="collapsed", key="__rd_sym_" + st.session_state.w_symbol_cat)
-        _new_sym = sym_ids[sym_labels.index(new_sym_label)]
-        if _new_sym != st.session_state.w_symbol:
-            st.session_state.w_symbol = _new_sym
-            st.rerun()
-
-        st.markdown("**Colore del simbolo**")
-        current_symcol_idx = color_values.index(st.session_state.w_symbol_color) if st.session_state.w_symbol_color in color_values else 1
-        new_symcol_label = st.selectbox("Colore simbolo", color_labels, index=current_symcol_idx, label_visibility="collapsed", key="__sb_symcol")
-        _new_symcol = color_values[color_labels.index(new_symcol_label)]
-        if _new_symcol != st.session_state.w_symbol_color:
-            st.session_state.w_symbol_color = _new_symcol
-            st.rerun()
-
-        st.markdown("**Ciglia**")
-        lash_labels = [l["label"] for l in LASHES]
-        lash_ids = [l["id"] for l in LASHES]
-        current_lash_idx = lash_ids.index(st.session_state.w_lashes) if st.session_state.w_lashes in lash_ids else 0
-        new_lash_label = st.radio("Stile ciglia", lash_labels, index=current_lash_idx, horizontal=True, label_visibility="collapsed", key="__rd_lashes")
-        _new_lash = lash_ids[lash_labels.index(new_lash_label)]
-        if _new_lash != st.session_state.w_lashes:
-            st.session_state.w_lashes = _new_lash
-            st.rerun()
-
-        st.markdown("**Colore delle ciglia**")
-        current_lashcol_idx = color_values.index(st.session_state.w_lashes_color) if st.session_state.w_lashes_color in color_values else 10
-        new_lashcol_label = st.selectbox("Colore ciglia", color_labels, index=current_lashcol_idx, label_visibility="collapsed", key="__sb_lashcol")
-        _new_lashcol = color_values[color_labels.index(new_lashcol_label)]
-        if _new_lashcol != st.session_state.w_lashes_color:
-            st.session_state.w_lashes_color = _new_lashcol
-            st.rerun()
-
-        st.markdown("**Sfondo**")
-        bg_labels = [b["label"] for b in BACKGROUNDS]
-        bg_ids = [b["id"] for b in BACKGROUNDS]
-        current_bg_idx = bg_ids.index(st.session_state.w_bg) if st.session_state.w_bg in bg_ids else 0
-        new_bg_label = st.selectbox("Sfondo", bg_labels, index=current_bg_idx, label_visibility="collapsed", key="__sb_bg")
-        _new_bg = bg_ids[bg_labels.index(new_bg_label)]
-        if _new_bg != st.session_state.w_bg:
-            st.session_state.w_bg = _new_bg
-            st.rerun()
-
-        st.markdown("---")
-        st.markdown("**Privacy**")
-        visible = st.checkbox("Mostra il mio sguardo nella galleria pubblica", value=user.get("visible_in_gallery", True), key="sel_visible")
-
-        col_save, col_reset = st.columns([2, 1])
-        with col_save:
-            if st.button("Salva il mio sguardo", use_container_width=True, type="primary", key="btn_save_avatar"):
+        preview_svg = eye_svg(live_avatar, size=260)
+        st.markdown(f'<div class="ed-preview-card">{preview_svg}<div class="ed-preview-label">Anteprima dal vivo</div></div>', unsafe_allow_html=True)
+        
+        st.markdown("<div style='height:0.8rem;'></div>", unsafe_allow_html=True)
+        
+        col_rand, col_save_top = st.columns(2)
+        with col_rand:
+            if st.button("🎲 Casuale", use_container_width=True, key="btn_random_avatar"):
+                st.session_state.w_shape = random.choice([s["id"] for s in SHAPES])
+                st.session_state.w_iris = random.choice([c[1] for c in COLORS if c[1] != "#ffffff"])
+                rand_sym = random.choice(SYMBOLS)
+                st.session_state.w_symbol = rand_sym["id"]
+                st.session_state.w_symbol_cat = rand_sym["category"]
+                st.session_state.w_symbol_color = random.choice([c[1] for c in COLORS])
+                st.session_state.w_lashes = random.choice(LASHES)["id"]
+                st.session_state.w_lashes_color = random.choice([c[1] for c in COLORS])
+                st.session_state.w_bg = random.choice(BACKGROUNDS)["id"]
+                st.session_state.w_border_color = random.choice([c[1] for c in COLORS])
+                st.rerun()
+        with col_save_top:
+            if st.button("💾 Salva", use_container_width=True, type="primary", key="btn_save_top"):
                 db[st.session_state.username]["avatar"] = {
                     "shape": st.session_state.w_shape,
                     "iris": st.session_state.w_iris,
@@ -1302,17 +1306,181 @@ elif st.session_state.view == "editor":
                     "bg": st.session_state.w_bg,
                     "border_color": st.session_state.w_border_color,
                 }
-                db[st.session_state.username]["visible_in_gallery"] = visible
                 save_db(db)
                 st.success("Sguardo salvato!")
                 st.rerun()
-        with col_reset:
-            if st.button("Annulla", use_container_width=True, key="btn_reset_avatar"):
-                for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_symbol_color", "w_lashes", "w_lashes_color", "w_bg", "w_border_color"]:
-                    if k in st.session_state:
-                        del st.session_state[k]
-                st.rerun()
 
+    # COLONNA DESTRA: TABS + PANNELLO
+    with c_controls:
+        # Tabs navigation con 4 bottoni
+        t1, t2, t3, t4 = st.columns(4)
+        tab_buttons = [
+            ("forma", "👁 Forma", "1 di 4", t1),
+            ("colori", "🎨 Colori", "2 di 4", t2),
+            ("simbolo", "⭐ Simbolo", "3 di 4", t3),
+            ("sfondo", "🌄 Sfondo", "4 di 4", t4),
+        ]
+        for tab_id, tab_label, tab_step, tab_col in tab_buttons:
+            with tab_col:
+                is_active = (st.session_state.editor_tab == tab_id)
+                btn_type = "primary" if is_active else "secondary"
+                if st.button(tab_label, key=f"tab_{tab_id}", use_container_width=True, type=btn_type):
+                    st.session_state.editor_tab = tab_id
+                    st.rerun()
+
+        st.markdown("<div style='height:0.8rem;'></div>", unsafe_allow_html=True)
+
+        # === PANNELLO TAB 1: FORMA ===
+        if st.session_state.editor_tab == "forma":
+            st.markdown(f"""
+            <div class="ed-panel">
+                <div class="ed-panel-step">Step 1 di 4</div>
+                <div class="ed-panel-title">Forma e ciglia</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            st.markdown('<div class="ed-label">Forma dell\'occhio</div>', unsafe_allow_html=True)
+            shape_cols = st.columns(len(SHAPES))
+            for i, s in enumerate(SHAPES):
+                with shape_cols[i]:
+                    is_active = (st.session_state.w_shape == s["id"])
+                    btn_type = "primary" if is_active else "secondary"
+                    if st.button(s["label"], key=f"shape_{s['id']}", use_container_width=True, type=btn_type):
+                        st.session_state.w_shape = s["id"]
+                        st.rerun()
+
+            st.markdown("<div style='height:0.6rem;'></div>", unsafe_allow_html=True)
+            st.markdown('<div class="ed-label">Tipo di ciglia</div>', unsafe_allow_html=True)
+            lash_cols = st.columns(len(LASHES))
+            for i, l in enumerate(LASHES):
+                with lash_cols[i]:
+                    is_active = (st.session_state.w_lashes == l["id"])
+                    btn_type = "primary" if is_active else "secondary"
+                    if st.button(l["label"], key=f"lash_{l['id']}", use_container_width=True, type=btn_type):
+                        st.session_state.w_lashes = l["id"]
+                        st.rerun()
+
+        # === PANNELLO TAB 2: COLORI ===
+        elif st.session_state.editor_tab == "colori":
+            st.markdown(f"""
+            <div class="ed-panel">
+                <div class="ed-panel-step">Step 2 di 4</div>
+                <div class="ed-panel-title">Colori</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            st.markdown('<div class="ed-label">Colore del bordo</div>', unsafe_allow_html=True)
+            render_swatch_row("border_color", st.session_state.w_border_color, "border")
+            
+            st.markdown("<div style='height:0.7rem;'></div>", unsafe_allow_html=True)
+            st.markdown('<div class="ed-label">Colore dell\'iride</div>', unsafe_allow_html=True)
+            render_swatch_row("iris", st.session_state.w_iris, "iris")
+
+            st.markdown("<div style='height:0.7rem;'></div>", unsafe_allow_html=True)
+            st.markdown('<div class="ed-label">Colore delle ciglia</div>', unsafe_allow_html=True)
+            render_swatch_row("lashes_color", st.session_state.w_lashes_color, "lashescol")
+
+        # === PANNELLO TAB 3: SIMBOLO ===
+        elif st.session_state.editor_tab == "simbolo":
+            st.markdown(f"""
+            <div class="ed-panel">
+                <div class="ed-panel-step">Step 3 di 4</div>
+                <div class="ed-panel-title">Simbolo nella pupilla</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # Categorie
+            st.markdown('<div class="ed-label">Categoria</div>', unsafe_allow_html=True)
+            cat_cols = st.columns(len(SYMBOL_CATEGORIES))
+            for i, (cat_id, cat_label) in enumerate(SYMBOL_CATEGORIES):
+                with cat_cols[i]:
+                    is_active = (st.session_state.w_symbol_cat == cat_id)
+                    btn_type = "primary" if is_active else "secondary"
+                    if st.button(cat_label, key=f"cat_{cat_id}", use_container_width=True, type=btn_type):
+                        st.session_state.w_symbol_cat = cat_id
+                        cat_syms = [s for s in SYMBOLS if s["category"] == cat_id]
+                        if cat_syms:
+                            st.session_state.w_symbol = cat_syms[0]["id"]
+                        st.rerun()
+
+            st.markdown("<div style='height:0.7rem;'></div>", unsafe_allow_html=True)
+
+            # Simboli (griglia 5 colonne)
+            cat_symbols = [s for s in SYMBOLS if s["category"] == st.session_state.w_symbol_cat]
+            st.markdown('<div class="ed-label">Scegli il simbolo</div>', unsafe_allow_html=True)
+            num_cols = 5
+            rows = (len(cat_symbols) + num_cols - 1) // num_cols
+            for row_idx in range(rows):
+                row_cols = st.columns(num_cols)
+                for col_idx in range(num_cols):
+                    sym_idx = row_idx * num_cols + col_idx
+                    if sym_idx < len(cat_symbols):
+                        sym = cat_symbols[sym_idx]
+                        with row_cols[col_idx]:
+                            is_active = (st.session_state.w_symbol == sym["id"])
+                            btn_type = "primary" if is_active else "secondary"
+                            if st.button(sym["label"], key=f"sym_{sym['id']}", use_container_width=True, type=btn_type):
+                                st.session_state.w_symbol = sym["id"]
+                                st.rerun()
+
+            st.markdown("<div style='height:0.7rem;'></div>", unsafe_allow_html=True)
+            st.markdown('<div class="ed-label">Colore del simbolo</div>', unsafe_allow_html=True)
+            render_swatch_row("symbol_color", st.session_state.w_symbol_color, "symcol")
+
+        # === PANNELLO TAB 4: SFONDO ===
+        elif st.session_state.editor_tab == "sfondo":
+            st.markdown(f"""
+            <div class="ed-panel">
+                <div class="ed-panel-step">Step 4 di 4</div>
+                <div class="ed-panel-title">Sfondo dell'avatar</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            st.markdown('<div class="ed-label">Scegli uno sfondo</div>', unsafe_allow_html=True)
+            num_cols = 4
+            rows = (len(BACKGROUNDS) + num_cols - 1) // num_cols
+            for row_idx in range(rows):
+                row_cols = st.columns(num_cols)
+                for col_idx in range(num_cols):
+                    bg_idx = row_idx * num_cols + col_idx
+                    if bg_idx < len(BACKGROUNDS):
+                        bg = BACKGROUNDS[bg_idx]
+                        with row_cols[col_idx]:
+                            is_active = (st.session_state.w_bg == bg["id"])
+                            btn_type = "primary" if is_active else "secondary"
+                            if st.button(bg["label"], key=f"bg_{bg['id']}", use_container_width=True, type=btn_type):
+                                st.session_state.w_bg = bg["id"]
+                                st.rerun()
+
+    # ===== Footer Privacy + Salva (sotto le colonne) =====
+    st.markdown("<div style='height:1.2rem;'></div>", unsafe_allow_html=True)
+    st.markdown("---")
+    
+    visible = st.checkbox("Mostra il mio sguardo nella galleria pubblica", value=user.get("visible_in_gallery", True), key="sel_visible")
+    
+    col_save, col_reset = st.columns([2, 1])
+    with col_save:
+        if st.button("💾 Salva il mio sguardo", use_container_width=True, type="primary", key="btn_save_avatar"):
+            db[st.session_state.username]["avatar"] = {
+                "shape": st.session_state.w_shape,
+                "iris": st.session_state.w_iris,
+                "symbol": st.session_state.w_symbol,
+                "symbol_color": st.session_state.w_symbol_color,
+                "lashes": st.session_state.w_lashes,
+                "lashes_color": st.session_state.w_lashes_color,
+                "bg": st.session_state.w_bg,
+                "border_color": st.session_state.w_border_color,
+            }
+            db[st.session_state.username]["visible_in_gallery"] = visible
+            save_db(db)
+            st.success("Sguardo salvato!")
+            st.rerun()
+    with col_reset:
+        if st.button("↺ Annulla", use_container_width=True, key="btn_reset_avatar"):
+            for k in ["w_shape", "w_iris", "w_symbol_cat", "w_symbol", "w_symbol_color", "w_lashes", "w_lashes_color", "w_bg", "w_border_color"]:
+                if k in st.session_state:
+                    del st.session_state[k]
+            st.rerun()
 
 # ==================== GALLERIA ====================
 elif st.session_state.view == "gallery":
