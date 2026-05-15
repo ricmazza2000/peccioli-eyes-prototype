@@ -1075,7 +1075,85 @@ if st.session_state.username is None and st.session_state.get("remembered_userna
     if remembered in db:
         st.session_state.username = remembered
 
+# Inizializza stato per "voglio fare login"
+if "show_login_form" not in st.session_state:
+    st.session_state.show_login_form = False
+
+# Se l'utente NON è loggato e NON ha cliccato "Accedi": mostra galleria pubblica in modalità ospite
+if st.session_state.username is None and not st.session_state.show_login_form:
+    # Hero compatto modalità ospite
+    guest_hero = f"""
+    <div style="background:linear-gradient(165deg,#0a0052 0%,{BRAND_BLUE} 50%,#1a0fb8 100%);border-radius:24px;padding:2rem 1.5rem;text-align:center;color:white;margin-bottom:1.5rem;">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:2rem;line-height:1;text-transform:uppercase;letter-spacing:0.02em;">Peccioli Eyes</div>
+        <div style="font-family:'Lobster Two',cursive;font-style:italic;font-size:1.3rem;color:{BRAND_YELLOW};margin-top:0.3rem;">to New Orleans</div>
+        <p style="color:rgba(255,255,255,0.85);margin:1rem auto 0;font-size:0.92rem;max-width:480px;line-height:1.5;">
+            Esplora la galleria degli sguardi creati dai 80 ragazzi.
+            Vuoi creare anche il tuo? Accedi o crea un profilo.
+        </p>
+    </div>
+    """
+    st.markdown(guest_hero, unsafe_allow_html=True)
+
+    # Bottone Accedi prominente
+    c1, c2, c3 = st.columns([1, 2, 1])
+    with c2:
+        if st.button("👁 Accedi / Crea il tuo sguardo", key="btn_open_login", use_container_width=True, type="primary"):
+            st.session_state.show_login_form = True
+            st.rerun()
+
+    st.markdown("---")
+
+    # Mostra direttamente la galleria
+    st.markdown('<div class="section-title-home">Gli sguardi di Peccioli</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-sub-home">Ogni ragazzo, un occhio</div>', unsafe_allow_html=True)
+
+    visible_users = [(uname, u) for uname, u in db.items() if u.get("visible_in_gallery", True)]
+    st.caption(str(len(visible_users)) + " sguardi in galleria - " + str(len(db)) + " profili totali")
+
+    if visible_users:
+        # Layout responsivo: 3 colonne desktop, 2 mobile (via CSS)
+        cols_per_row = 3
+        for i in range(0, len(visible_users), cols_per_row):
+            row = st.columns(cols_per_row)
+            for j, (uname, u) in enumerate(visible_users[i:i+cols_per_row]):
+                with row[j]:
+                    av = u.get("avatar", DEFAULT_AVATAR)
+                    if "brow" in av:
+                        del av["brow"]
+                    if "symbol_color" not in av:
+                        av["symbol_color"] = "#130089"
+                    if "lashes_color" not in av:
+                        av["lashes_color"] = "#1a1a1a"
+                    if "border_color" not in av:
+                        av["border_color"] = "#ffffff"
+                    
+                    svg = eye_svg(av, size=200)
+                    display = u.get("display_name", uname)
+                    card_html = f'<div style="background:{BRAND_BLUE_LIGHT};border-radius:18px;padding:1rem;text-align:center;margin-bottom:0.8rem;">{svg}<div style="margin-top:0.5rem;font-weight:700;color:{BRAND_BLUE};font-size:0.92rem;">{display}</div></div>'
+                    st.markdown(card_html, unsafe_allow_html=True)
+    else:
+        st.info("Nessuno sguardo ancora creato. Sii il primo!")
+
+    # CTA in fondo
+    st.markdown("---")
+    c1, c2, c3 = st.columns([1, 2, 1])
+    with c2:
+        if st.button("✨ Crea il tuo sguardo", key="btn_open_login_bottom", use_container_width=True, type="primary"):
+            st.session_state.show_login_form = True
+            st.rerun()
+
+    st.stop()
+
+
+# Se utente NON loggato MA ha cliccato "Accedi": mostra schermata login
 if st.session_state.username is None:
+    # Bottone per tornare alla galleria pubblica
+    c_back1, c_back2 = st.columns([1, 4])
+    with c_back1:
+        if st.button("← Galleria", key="btn_back_gallery"):
+            st.session_state.show_login_form = False
+            st.rerun()
+
     login_hero = '<div class="login-hero"><div class="login-hero-title">Peccioli Eyes</div><div class="login-hero-sub">to New Orleans</div><div class="login-hero-year">2026</div><p style="color:rgba(255,255,255,0.85);margin-top:1.5rem;font-size:0.95rem;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6;">Crea il tuo sguardo personale. Scegli uno username e una password che ricorderai.</p></div>'
     st.markdown(login_hero, unsafe_allow_html=True)
 
@@ -1101,6 +1179,7 @@ if st.session_state.username is None:
                 st.error("Password sbagliata. Riprova o usa 'Password dimenticata'.")
             else:
                 st.session_state.username = u
+                st.session_state.show_login_form = False
                 if remember:
                     st.session_state.remembered_username = u
                 for k in list(st.session_state.keys()):
@@ -1173,6 +1252,7 @@ if st.session_state.username is None:
                 }
                 save_db(db)
                 st.session_state.username = u
+                st.session_state.show_login_form = False
                 st.session_state.remembered_username = u
                 st.session_state.view = "editor"
                 for k in list(st.session_state.keys()):
